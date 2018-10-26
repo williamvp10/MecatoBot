@@ -16,7 +16,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
-
+ 
 public class Weather {
 
 	String apiKey = "9c85a76180a8d5953e3bde8bd5196d32";

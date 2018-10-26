@@ -77,7 +77,7 @@ public class Chatbot {
 			userUtterance = userInput.get("userUtterance").getAsString();
 			userUtterance = userUtterance.replaceAll("%2C", ",");
 		}
-		if (userUtterance.matches("(hi|hello)( there)?")){
+		if (userUtterance.matches("(hola|holi|hello|hi|Hola|Hello)( como vas)?")){
 			userAction.add("userIntent", new JsonPrimitive("greet"));
 		}
 		else if (userUtterance.matches("(thanks)|(thank you)")){
