@@ -170,13 +170,11 @@ public class Chatbot {
 		
 		JsonObject out = new JsonObject();
 		String botIntent = context.get("botIntent").getAsString();
-		String[] buttons= new String[3];
+		String buttons= "";
 		String botUtterance = "";
 		if (botIntent.equals("saludoUsuario")){
 			botUtterance = "hola ,que deseas hoy? ";
-                        buttons[0]="pizza";
-                        buttons[1]="hamburguesa";
-                        buttons[2]="perro caliente";
+                        buttons="{\"pizza\" , \"hamburguesa\", \"perro caliente\"}";
 		}
 		else if (botIntent.equals("agradecimientoUsuario")){
 			botUtterance = "gracias por usar nuestro servicio que tengas un buen dia!!";
@@ -194,9 +192,7 @@ public class Chatbot {
 		}
 		out.add("botIntent", context.get("botIntent"));
 		out.add("botUtterance", new JsonPrimitive(botUtterance));
-                for (int i = 0; i < buttons.length; i++) {
-                  out.add("button"+i, new JsonPrimitive(buttons[i]));
-                }
+                out.add("buttons", new JsonPrimitive(buttons));
 		return out;
 	}
 
