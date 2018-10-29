@@ -9,7 +9,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import dao.TiendaDAO;
 import Modelo.Tienda;
+import java.util.ArrayList;
 import weatherman.weather.Weather;
+import weatherman.web.utils.JSONUtil;
 
 public class Chatbot {
 
@@ -170,11 +172,12 @@ public class Chatbot {
 		
 		JsonObject out = new JsonObject();
 		String botIntent = context.get("botIntent").getAsString();
-		String buttons= "";
+		ArrayList<String> buttons= new ArrayList();
 		String botUtterance = "";
 		if (botIntent.equals("saludoUsuario")){
 			botUtterance = "hola ,que deseas hoy? ";
-                        buttons="{\"pizza\" , \"hamburguesa\", \"perro caliente\"}";
+                        buttons.add("pizza");
+                        buttons.add("hamburguesa");
 		}
 		else if (botIntent.equals("agradecimientoUsuario")){
 			botUtterance = "gracias por usar nuestro servicio que tengas un buen dia!!";
@@ -192,7 +195,7 @@ public class Chatbot {
 		}
 		out.add("botIntent", context.get("botIntent"));
 		out.add("botUtterance", new JsonPrimitive(botUtterance));
-                out.add("buttons", new JsonPrimitive(buttons));
+                out.add("buttons",new JsonPrimitive(new JSONUtil().toJson(buttons)));
 		return out;
 	}
 
