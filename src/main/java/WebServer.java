@@ -21,7 +21,7 @@ public class WebServer {
 		
 		final Chatbot bot = new Chatbot();
 		
-		get("/", (req, res) -> "Hello World! I am WeatherMan, the weather bot!!");
+		get("/", (req, res) -> "Hello World! I am mecato bot!!");
 		
 		//post handle for WeatherMan chatbot
 		post("/bot", new Route() {

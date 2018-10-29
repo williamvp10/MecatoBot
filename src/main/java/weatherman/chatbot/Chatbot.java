@@ -7,14 +7,16 @@ import org.apache.http.client.ClientProtocolException;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-
+import dao.TiendaDAO;
+import Modelo.Tienda;
 import weatherman.weather.Weather;
 
 public class Chatbot {
 
 	JsonObject context;
 	Weather weather;
-	
+	TiendaDAO tienda;
+        
 	public static void main(String[] args){
 		Chatbot c = new Chatbot();
 		Scanner scanner = new Scanner(System.in);
@@ -36,6 +38,7 @@ public class Chatbot {
 		} while (!userUtterance.equals("QUIT"));
 		scanner.close();
 	}
+        
 	
 	public Chatbot(){
 		context = new JsonObject();
@@ -78,15 +81,14 @@ public class Chatbot {
 			userUtterance = userUtterance.replaceAll("%2C", ",");
 		}
 		if (userUtterance.matches("(hola|holi|hello|hi|Hola|Hello)( como vas)?")){
-			userAction.add("userIntent", new JsonPrimitive("greet"));
+			userAction.add("userIntent", new JsonPrimitive("saludo"));
 		}
-		else if (userUtterance.matches("(thanks)|(thank you)")){
-			userAction.add("userIntent", new JsonPrimitive("thank"));
+		else if (userUtterance.matches("(Gracias|gracias|GRACIAS|thanks)|(thank you)")){
+			userAction.add("userIntent", new JsonPrimitive("agradecimiento"));
 		}
 		else if (userUtterance.matches("current weather") || userUtterance.matches("weather now")){
 			userAction.add("userIntent", new JsonPrimitive("request_current_weather"));
-		}
-		else {
+		}else {
 			String currentTask = context.get("currentTask").getAsString();
 			String botIntent = context.get("botIntent").getAsString();
 			if (currentTask.equals("requestWeather") && 
@@ -110,8 +112,8 @@ public class Chatbot {
 		
 		//
 		String userIntent = context.get("userIntent").getAsString();
-		if (userIntent.equals("greet")){
-			context.add("currentTask", new JsonPrimitive("greetUser"));
+		if (userIntent.equals("saludo")){
+			context.add("currentTask", new JsonPrimitive("saludoUsuario"));
 		}
 		else if (userIntent.equals("request_current_weather")){
 			context.add("currentTask", new JsonPrimitive("requestWeather"));
@@ -123,18 +125,18 @@ public class Chatbot {
 			context.add("placeOfWeather", userAction.get("cityCode"));
 			context.add("placeName", userAction.get("cityName"));
 		}
-		else if (userIntent.equals("thank")){
-			context.add("currentTask", new JsonPrimitive("thankUser"));
+		else if (userIntent.equals("agradecimiento")){
+			context.add("currentTask", new JsonPrimitive("agradecimientoUsuario"));
 		}
 	}
 	
 	public void identifyBotIntent(){
 		String currentTask = context.get("currentTask").getAsString();
-		if (currentTask.equals("greetUser")){
-			context.add("botIntent", new JsonPrimitive("greetUser"));
+		if (currentTask.equals("saludoUsuario")){
+			context.add("botIntent", new JsonPrimitive("saludoUsuario"));
 		}
-		else if (currentTask.equals("thankUser")){
-			context.add("botIntent", new JsonPrimitive("thankUser"));
+		else if (currentTask.equals("agradecimientoUsuario")){
+			context.add("botIntent", new JsonPrimitive("agradecimientoUsuario"));
 		}
 		else if (currentTask.equals("requestWeather")){
 			if (context.get("placeOfWeather").getAsString().equals("unknown")){
@@ -168,14 +170,16 @@ public class Chatbot {
 		
 		JsonObject out = new JsonObject();
 		String botIntent = context.get("botIntent").getAsString();
-		
+		String[] buttons= new String[3];
 		String botUtterance = "";
-		if (botIntent.equals("greetUser")){
-			botUtterance = "Hi there! I am WeatherMan, your weather bot! "
-					+ "What would you like to know? Current weather or forecast?";
+		if (botIntent.equals("saludoUsuario")){
+			botUtterance = "hola ,que deseas hoy? ";
+                        buttons[0]="pizza";
+                        buttons[1]="hamburguesa";
+                        buttons[2]="perro caliente";
 		}
-		else if (botIntent.equals("thankUser")){
-			botUtterance = "Thanks for talking to me! Have a great day!!";
+		else if (botIntent.equals("agradecimientoUsuario")){
+			botUtterance = "gracias por usar nuestro servicio que tengas un buen dia!!";
 		}
 		else if (botIntent.equals("requestPlace")){
 			botUtterance = "Ok. Which city?";
@@ -190,6 +194,9 @@ public class Chatbot {
 		}
 		out.add("botIntent", context.get("botIntent"));
 		out.add("botUtterance", new JsonPrimitive(botUtterance));
+                for (int i = 0; i < buttons.length; i++) {
+                  out.add("button"+i, new JsonPrimitive(buttons[i]));
+                }
 		return out;
 	}
 
