@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package daorest;
 
 
  
-import Modelo.Product;
+import Modelorest.Product;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
