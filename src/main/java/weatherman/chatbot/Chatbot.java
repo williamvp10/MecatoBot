@@ -180,7 +180,7 @@ public class Chatbot {
                         buttons.add("hamburguesa");
 		}
 		else if (botIntent.equals("agradecimientoUsuario")){
-			botUtterance = "gracias por usar nuestro servicio que tengas un buen dia!!";
+			botUtterance = "gracias por usar nuestro servicio, que tengas un buen dia!!";
 		}
 		else if (botIntent.equals("requestPlace")){
 			botUtterance = "Ok. Which city?";
