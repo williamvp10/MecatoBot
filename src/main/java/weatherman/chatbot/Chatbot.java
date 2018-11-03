@@ -178,8 +178,8 @@ public class Chatbot {
 		String botUtterance = "";
 		if (botIntent.equals("saludoUsuario")){
 			botUtterance = "hola ,que deseas hoy? ";
-                        buttons.add("button1",new JsonPrimitive("pizza"));
-                        buttons.add("button2",new JsonPrimitive("hambuguesa"));
+                        buttons.add("button",new JsonPrimitive("pizza"));
+                        buttons.add("button",new JsonPrimitive("hambuguesa"));
 		}
 		else if (botIntent.equals("agradecimientoUsuario")){
 			botUtterance = "gracias por usar nuestro servicio, que tengas un buen dia!!";
