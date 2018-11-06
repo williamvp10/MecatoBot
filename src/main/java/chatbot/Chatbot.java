@@ -14,6 +14,7 @@ public class Chatbot {
 
     JsonObject context;
     Service service;
+    int estado;
 
     public static void main(String[] args) throws IOException {
         Chatbot c = new Chatbot();
@@ -41,6 +42,7 @@ public class Chatbot {
         context = new JsonObject();
         context.add("currentTask", new JsonPrimitive("none"));
         service = new Service();
+        estado=0;
     }
 
     public JsonObject process(JsonObject userInput) throws IOException {
