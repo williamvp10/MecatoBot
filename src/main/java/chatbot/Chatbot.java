@@ -46,19 +46,19 @@ public class Chatbot {
     }
 
     public JsonObject process(JsonObject userInput) throws IOException {
-
+        System.out.println(userInput.toString());
         //step1: process user input
         JsonObject userAction = processUserInput(userInput);
 
         //step2: update context
         updateContext(userAction);
-
+        System.out.println("context "+context.toString());
         //step3: identify bot intent
         identifyBotIntent();
 
         //step4: structure output
         JsonObject out = getBotOutput();
-
+        System.out.println("out "+out.toString());
         return out;
     }
 
