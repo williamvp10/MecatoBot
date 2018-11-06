@@ -84,6 +84,7 @@ public class Chatbot {
         } else if (userUtterance.matches("(Gracias|gracias|GRACIAS|thanks)|(thank you)")) {
             userAction.add("userIntent", new JsonPrimitive("agradecimiento"));
         } else {
+            System.out.println("usuario : " + userUtterance);
             String currentTask = context.get("currentTask").getAsString();
             String botIntent = context.get("botIntent").getAsString();
             if (currentTask.equals("request")) {
@@ -188,6 +189,8 @@ public class Chatbot {
             botUtterance = " estas son las tiendas que ofrecen el producto que deseas, espero te haya sido de ayuda ";
             buttons=(JsonArray) context.get("tiendas");
         }
+        buttons.add(new JsonPrimitive("pizza"));
+        buttons.add(new JsonPrimitive("hamburguesa"));
         out.add("botIntent", context.get("botIntent"));
         out.add("botUtterance", new JsonPrimitive(botUtterance));
         out.add("buttons", buttons);
