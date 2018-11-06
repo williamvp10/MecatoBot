@@ -172,22 +172,22 @@ public class Chatbot {
 
         JsonObject out = new JsonObject();
         String botIntent = context.get("botIntent").getAsString();
-        JsonArray buttons = new JsonArray();
+        JsonObject buttons = new JsonObject();
         String botUtterance = "";
         if (botIntent.equals("saludoUsuario")) {
             botUtterance = "hola, que deseas hoy? ";
-            buttons=(JsonArray) context.get("tipos");
+            buttons=(JsonObject) context.get("tipos");
         } else if (botIntent.equals("agradecimientoUsuario")) {
             botUtterance = "gracias por usar nuestro servicio, que tengas un buen dia!!";
         } else if (botIntent.equals("requestTipo")) {
             botUtterance = " Que deseas hoy? ";
-            buttons=(JsonArray) context.get("tipos");
+            buttons=(JsonObject) context.get("tipos");
         } else if (botIntent.equals("requestIngredientes")) {
             botUtterance = " Selecciona los ingredientes para tu "+context.get("tipo").getAsString();
-            buttons=(JsonArray) context.get("ingredientes");
+            buttons= (JsonObject) context.get("ingredientes");
         } else if (botIntent.equals("requestTiendas")) {
             botUtterance = " estas son las tiendas que ofrecen el producto que deseas, espero te haya sido de ayuda ";
-            buttons=(JsonArray) context.get("tiendas");
+            buttons=(JsonObject) context.get("tiendas");
         }
         
         out.add("botIntent", context.get("botIntent"));
