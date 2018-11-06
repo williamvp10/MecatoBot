@@ -80,13 +80,14 @@ public class Chatbot {
         }
         if (userUtterance.matches("(hola|holi|hello|hi|Hola|Hello)( como vas)?")) {
             userAction.add("userIntent", new JsonPrimitive("saludo"));
+            estado=0;
         } else if (userUtterance.matches("(Gracias|gracias|GRACIAS|thanks)|(thank you)")) {
             userAction.add("userIntent", new JsonPrimitive("agradecimiento"));
         } else {
             String currentTask = context.get("currentTask").getAsString();
             String botIntent = context.get("botIntent").getAsString();
             if (currentTask.equals("request")) {
-                if (botIntent.equals("requestTipos")) {
+                if (botIntent.equals("requestTipos")|| estado==0) {
                     //obtener info tipos
                     JsonObject obj = service.getTipos();
                     if (!obj.isJsonNull()) {
@@ -95,7 +96,8 @@ public class Chatbot {
                         buttons.add(new JsonPrimitive("pizza"));
                         userAction.add("botones", buttons);
                     }
-                } else if (botIntent.equals("requestIngredientes")) {
+                    estado=1;
+                } else if (botIntent.equals("requestIngredientes")|| estado==1) {
                     //obtener info ingredientes disponibles
                     JsonObject obj = service.getIngredientes(userUtterance);
                     if (!obj.get("ingredientes").isJsonNull()) {
@@ -104,7 +106,8 @@ public class Chatbot {
                         userAction.add("botones", buttons);
                         context.add("tipo",new JsonPrimitive(userUtterance));
                     }
-                } else if (botIntent.equals("requestTiendas")) {
+                     estado=2;
+                } else if (botIntent.equals("requestTiendas")|| estado==2) {
                     //obtener info Tiendas disponibles
                     JsonObject obj = service.getTienda(context.get("tipo").getAsString(),userUtterance);
                     if (!obj.get("tiendas").isJsonNull()) {
@@ -113,6 +116,7 @@ public class Chatbot {
                         JsonArray buttons = obj.getAsJsonArray();
                         userAction.add("botones", buttons);
                     }
+                    estado=3;
                 }
 
             }
