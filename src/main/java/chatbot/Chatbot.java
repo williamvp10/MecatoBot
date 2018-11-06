@@ -189,8 +189,7 @@ public class Chatbot {
             botUtterance = " estas son las tiendas que ofrecen el producto que deseas, espero te haya sido de ayuda ";
             buttons=(JsonArray) context.get("tiendas");
         }
-        buttons.add(new JsonPrimitive("pizza"));
-        buttons.add(new JsonPrimitive("hamburguesa"));
+        
         out.add("botIntent", context.get("botIntent"));
         out.add("botUtterance", new JsonPrimitive(botUtterance));
         out.add("buttons", buttons);
