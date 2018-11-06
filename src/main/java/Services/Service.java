@@ -26,7 +26,7 @@ public class Service {
 
     public JsonObject getTipos()
             throws ClientProtocolException, IOException {
-
+        System.out.println("entroooo");
         String url1 = "https://servicemecatobot.herokuapp.com/myApp/rest/products";
 
         URL url = new URL(url1);
@@ -39,7 +39,7 @@ public class Service {
         while ((inputLine = in.readLine()) != null) {
             content.append(inputLine);
         }
-        System.out.println(content);
+        System.out.println("mensaje: "+content);
         in.close();
         con.disconnect();
         JsonParser parser = new JsonParser();
