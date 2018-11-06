@@ -1,4 +1,4 @@
-package weatherman.web.utils;
+package web.utils;
 
 public class ResponseError {
 	private String errorType;

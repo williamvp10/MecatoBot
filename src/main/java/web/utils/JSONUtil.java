@@ -1,4 +1,4 @@
-package weatherman.web.utils;
+package web.utils;
 
 import com.google.gson.Gson;
 

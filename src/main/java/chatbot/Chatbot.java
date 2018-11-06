@@ -8,14 +8,12 @@ import org.apache.http.client.ClientProtocolException;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import dao.TiendaDAO;
 import com.google.gson.JsonArray;
 
 public class Chatbot {
 
     JsonObject context;
     Service service;
-    TiendaDAO tienda;
 
     public static void main(String[] args) throws IOException {
         Chatbot c = new Chatbot();

@@ -5,12 +5,15 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
-import weatherman.chatbot.Chatbot;
-import weatherman.web.utils.ResponseError;
-import static weatherman.web.utils.JSONUtil.*;
+import chatbot.Chatbot;
+import web.utils.ResponseError;
+import static web.utils.JSONUtil.*;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WebServer {
 
@@ -58,7 +61,12 @@ public class WebServer {
                     JsonObject userInput = new JsonObject();
                     userInput.add("userUtterance", new JsonPrimitive(userUtterance));
 
-                    String botResponse = bot.processFB(userInput);
+                    String botResponse=null;
+                    try {
+                        botResponse = bot.processFB(userInput);
+                    } catch (IOException ex) {
+                        Logger.getLogger(WebServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     System.out.println("Main: Bot says:" + botResponse);
                     if (botResponse != null) {
                         return botResponse;
