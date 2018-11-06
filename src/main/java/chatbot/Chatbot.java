@@ -168,7 +168,7 @@ public class Chatbot {
         }
     }
 
-    public JsonObject getBotOutput() {
+    public JsonObject getBotOutput() throws IOException {
 
         JsonObject out = new JsonObject();
         String botIntent = context.get("botIntent").getAsString();
@@ -176,18 +176,18 @@ public class Chatbot {
         String botUtterance = "";
         if (botIntent.equals("saludoUsuario")) {
             botUtterance = "hola, que deseas hoy? ";
-            buttons=(JsonObject) context.get("tipos");
+            buttons= service.getTipos();
         } else if (botIntent.equals("agradecimientoUsuario")) {
             botUtterance = "gracias por usar nuestro servicio, que tengas un buen dia!!";
         } else if (botIntent.equals("requestTipo")) {
             botUtterance = " Que deseas hoy? ";
-            buttons=(JsonObject) context.get("tipos");
+            buttons=service.getTipos();
         } else if (botIntent.equals("requestIngredientes")) {
             botUtterance = " Selecciona los ingredientes para tu "+context.get("tipo").getAsString();
-            buttons= (JsonObject) context.get("ingredientes");
+            buttons=service.getIngredientes(context.get("tipo").toString());
         } else if (botIntent.equals("requestTiendas")) {
             botUtterance = " estas son las tiendas que ofrecen el producto que deseas, espero te haya sido de ayuda ";
-            buttons=(JsonObject) context.get("tiendas");
+            buttons=service.getIngredientes(context.get("ingredientes").toString());
         }
         
         out.add("botIntent", context.get("botIntent"));
