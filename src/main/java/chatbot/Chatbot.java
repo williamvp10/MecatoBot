@@ -42,7 +42,7 @@ public class Chatbot {
         context = new JsonObject();
         context.add("currentTask", new JsonPrimitive("none"));
         service = new Service();
-        estado=0;
+        estado=-1;
     }
 
     public JsonObject process(JsonObject userInput) throws IOException {
@@ -80,7 +80,7 @@ public class Chatbot {
         }
         if (userUtterance.matches("(hola|holi|hello|hi|Hola|Hello)( como vas)?")) {
             userAction.add("userIntent", new JsonPrimitive("saludo"));
-            estado=0;
+           // estado=0;
         } else if (userUtterance.matches("(Gracias|gracias|GRACIAS|thanks)|(thank you)")) {
             userAction.add("userIntent", new JsonPrimitive("agradecimiento"));
         } else {
@@ -97,7 +97,7 @@ public class Chatbot {
                         buttons.add(new JsonPrimitive("pizza"));
                         userAction.add("botones", buttons);
                     }
-                    estado=1;
+                   // estado=1;
                 } else if (botIntent.equals("requestIngredientes")|| estado==1) {
                     //obtener info ingredientes disponibles
                     JsonObject obj = service.getIngredientes(userUtterance);
@@ -107,7 +107,7 @@ public class Chatbot {
                         userAction.add("botones", buttons);
                         context.add("tipo",new JsonPrimitive(userUtterance));
                     }
-                     estado=2;
+                   //  estado=2;
                 } else if (botIntent.equals("requestTiendas")|| estado==2) {
                     //obtener info Tiendas disponibles
                     JsonObject obj = service.getTienda(context.get("tipo").getAsString(),userUtterance);
@@ -117,7 +117,7 @@ public class Chatbot {
                         JsonArray buttons = obj.getAsJsonArray();
                         userAction.add("botones", buttons);
                     }
-                    estado=3;
+                   // estado=3;
                 }
 
             }
