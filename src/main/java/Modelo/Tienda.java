@@ -15,7 +15,8 @@ public class Tienda {
     
     private String id;
     private String nombre;
-
+    
+    
     public Tienda(String id, String nombre) {
         this.id = id;
         this.nombre = nombre;

@@ -18,83 +18,15 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
  
 public class Weather {
-
-	String apiKey = "9c85a76180a8d5953e3bde8bd5196d32";
-	HashMap<String,String> cityCodes;
-	
-	
-	public static void main(String[] args) {
-		try {
-			(new Weather()).getWeatherReport("2643743", 0);
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public Weather(){
-		loadCityCodes();
 	}
 	
-	
-	public void loadCityCodes(){
-		cityCodes = new HashMap<String,String>();
-		cityCodes.put("London,GB", "2643743");
-		cityCodes.put("London,US","4119617");
-		cityCodes.put("Paris", "2988507");
-	}
-	
-	public JsonObject getCityCode(String cityName){
-		JsonObject out = new JsonObject();
-		out.add("cityCode", null);
-		
-		if (cityCodes.containsKey(cityName)){
-			out.add("cityCode", new JsonPrimitive(cityCodes.get(cityName)));
-			out.add("cityName", new JsonPrimitive(cityName));
-		}
-		
-		return out;
-	}
-	
-	public String getWeatherReport(String cityCode, Integer i) 
-			throws ClientProtocolException, IOException{
-		
-		JsonObject currentWeather = null;
-		if (cityCode != null){ 
-			currentWeather = getWeatherAtTime(cityCode, i);
-		}
-		
-		
-		String weatherReport = null;
-		if (currentWeather != null){
-			JsonObject weather = currentWeather.get("weather")
-									.getAsJsonArray().get(0).getAsJsonObject();
-			Double avgTemp = Double.valueOf(currentWeather.get("main").getAsJsonObject().get("temp").getAsString()) - 273.15;
-			String avgTempSt = String.valueOf(avgTemp).split("\\.")[0];
-			
-			weatherReport = "The temperature is " + avgTempSt + " degrees Celsius. " 
-					+ weather.get("description").getAsString() + ".";
-		}
-		//System.out.println(weatherReport);
-		return weatherReport;
-	}
-
-	public JsonObject getWeatherAtTime(String cityCode, Integer i) 
-			throws ClientProtocolException, IOException{
-		
-		JsonObject json = getWeather(cityCode);
-		JsonArray list = json.get("list").getAsJsonArray();
-		JsonObject weatherAtTime = list.get(i).getAsJsonObject();
-		return weatherAtTime;
-	}
-	
-	public JsonObject getWeather(String cityCode) 
+	public JsonObject getTipos(String tipo) 
 			throws ClientProtocolException, IOException{
 		
 		//step 1: Prepare the url
-		String url = "http://api.openweathermap.org/data/2.5/forecast?id=" 
-					+ cityCode + "&APPID=" + apiKey ;
+		String url = "https://servicemecatobot.herokuapp.com/myApp/rest/products/"+tipo;
 		
 		//step 2: Create a HTTP client
 		HttpClient httpclient = HttpClientBuilder.create().build();
@@ -108,8 +40,7 @@ public class Weather {
         int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode == 200) {
             String response_string = EntityUtils.toString(response.getEntity());
-            json = (new JsonParser()).parse(response_string)
-            						.getAsJsonObject();
+            json = (new JsonParser()).parse(response_string).getAsJsonObject();
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String prettyJson = gson.toJson(json);
             System.out.println(prettyJson);
