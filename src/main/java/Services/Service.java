@@ -32,7 +32,8 @@ public class Service {
         //step 3: Create a HTTPGet object and execute the url
         HttpGet httpGet = new HttpGet(url);
         HttpResponse response = httpclient.execute(httpGet);
-
+        
+        System.out.println("response "+ response.toString());
         //step 4: Process the result
         JsonObject json = null;
         int statusCode = response.getStatusLine().getStatusCode();
@@ -43,7 +44,7 @@ public class Service {
             String prettyJson = gson.toJson(json);
             System.out.println(prettyJson);
         }
-
+       
         return json;
     }
 
