@@ -90,17 +90,16 @@ public class Chatbot {
             System.out.println("usuario : " + userUtterance);
             String currentTask = context.get("currentTask").getAsString();
             String botIntent = context.get("botIntent").getAsString();
-            if (currentTask.equals("request")) {
-                if (botIntent.equals("requestTipos")) {
+            if (userType!=null) {
+                if (userType.trim().equals("requestTipos")) {
                     //obtener info tipos
                     JsonObject obj = service.getTipos();
                     if (!obj.isJsonNull()) {
                         JsonArray buttons = obj.getAsJsonArray();
                         userAction.add("userIntent", new JsonPrimitive("informacionTipos"));
-                        buttons.add(new JsonPrimitive("pizza"));
                         userAction.add("botones", buttons);
                     }
-                } else if (botIntent.equals("requestIngredientes")) {
+                } else if (userType.trim().equals("requestIngredientes")) {
                     //obtener info ingredientes disponibles
                     JsonObject obj = service.getIngredientes(userUtterance);
                     if (!obj.get("ingredientes").isJsonNull()) {
@@ -109,7 +108,7 @@ public class Chatbot {
                         userAction.add("botones", buttons);
                         context.add("tipo", new JsonPrimitive(userUtterance));
                     }
-                } else if (botIntent.equals("requestTiendas") ) {
+                } else if (userType.trim().equals("requestTiendas") ) {
                     //obtener info Tiendas disponibles
                     JsonObject obj = service.getTienda(context.get("tipo").getAsString(), userUtterance);
                     if (!obj.get("tiendas").isJsonNull()) {
