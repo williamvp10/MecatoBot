@@ -178,6 +178,7 @@ public class Chatbot {
         if (botIntent.equals("saludoUsuario")) {
             botUtterance = "hola, que deseas en este instante? ";
             type = "saludar";
+            System.out.println(service.getTipos().toString());
             buttons = service.getTipos();
         } else if (botIntent.equals("agradecimientoUsuario")) {
             botUtterance = "gracias por usar nuestro servicio, que tengas un buen dia!!";
