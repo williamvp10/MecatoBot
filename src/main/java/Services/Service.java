@@ -27,7 +27,6 @@ public class Service {
 
     public JsonObject getTipos()
             throws ClientProtocolException, IOException {
-        System.out.println("entroooo");
         String url = "https://servicemecatobot.herokuapp.com/myApp/rest/products";
 
          //step 2: Create a HTTP client
@@ -41,7 +40,6 @@ public class Service {
         JsonObject json = null;
         int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode == 200) {
-            System.out.println("funcooooooooo");
             String response_string = EntityUtils.toString(response.getEntity());
             json = (new JsonParser()).parse(response_string)
                     .getAsJsonObject();
