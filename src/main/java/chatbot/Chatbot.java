@@ -71,7 +71,7 @@ public class Chatbot {
         //default case
         userAction.add("userIntent", new JsonPrimitive(""));
         
-        if (userInput.has("serUtterance")) {
+        if (userInput.has("userUtterance")) {
             userUtterance = userInput.get("userUtterance").getAsString();
             userUtterance = userUtterance.replaceAll("%2C", ",");
         }
