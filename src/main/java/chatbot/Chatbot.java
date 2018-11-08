@@ -194,7 +194,8 @@ public class Chatbot {
             buttons = service.getIngredientes(context.get("ing").toString());
         }
         
-        botUtterance+=buttons.getAsString();
+        botUtterance+=""+buttons.getAsString();
+        System.out.println("bot---- "+botUtterance);
         out.add("botIntent", context.get("botIntent"));
         out.add("botUtterance", new JsonPrimitive(botUtterance));
         out.add("type", new JsonPrimitive(type));
