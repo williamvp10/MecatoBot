@@ -68,11 +68,11 @@ public class Chatbot {
     public JsonObject processUserInput(JsonObject userInput) throws IOException {
         String userUtterance = null;
         JsonObject userAction = new JsonObject();
-
+        System.out.println(userInput);
         //default case
         userAction.add("userIntent", new JsonPrimitive(""));
 
-        if (userInput.has("userUtterance")) {
+        if (userInput.has("serUtterance")) {
             userUtterance = userInput.get("userUtterance").getAsString();
             userUtterance = userUtterance.replaceAll("%2C", ",");
         }
