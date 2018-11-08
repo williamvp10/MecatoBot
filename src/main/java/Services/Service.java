@@ -81,7 +81,7 @@ public class Service {
             throws ClientProtocolException, IOException {
 
         //step 1: Prepare the url
-        String url = "https://servicemecatobot.herokuapp.com/myApp/rest/tienda/" + tipo.trim() + "/" + ing.trim();
+        String url = "https://servicemecatobot.herokuapp.com/myApp/rest/tiendas/" + tipo.trim() + "/" + ing.trim();
 
         //step 2: Create a HTTP client
         HttpClient httpclient = HttpClientBuilder.create().build();
