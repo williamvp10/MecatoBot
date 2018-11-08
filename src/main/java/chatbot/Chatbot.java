@@ -77,8 +77,8 @@ public class Chatbot {
         }
          System.out.println("entrooo "+userUtterance); 
         if (userUtterance.matches("(hola|holi|hello|hi|Hola|Hello)( como vas)?")) {
-            userAction.add("userIntent", new JsonPrimitive("saludo"));
-           
+            userAction.add("userIntent", new JsonPrimitive("saludoUsuario"));
+           userAction.add("userIntent", new JsonPrimitive("saludarusuario"));
         } else if (userUtterance.matches("(Gracias|gracias|GRACIAS|thanks)|(thank you)")) {
             userAction.add("userIntent", new JsonPrimitive("agradecimiento"));
         } else {
