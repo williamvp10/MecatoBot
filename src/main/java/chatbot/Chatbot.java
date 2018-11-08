@@ -99,24 +99,12 @@ public class Chatbot {
 
             if (!tipo.equals("") && ing.equals("")) {
                 //obtener info ingredientes disponibles
-                System.out.println(userInput.get("title").getAsString());
-                JsonObject obj = service.getIngredientes(tipo);
-                if (!obj.get("ingredientes").isJsonNull()) {
-                    userAction.add("userIntent", new JsonPrimitive("informacionIngre"));
-                    JsonArray buttons = obj.getAsJsonArray();
-                    userAction.add("botones", buttons);
-                    context.add("tipo", new JsonPrimitive(userUtterance));
-                }
+                
+                userAction.add("userIntent", new JsonPrimitive("informacionIngre"));
+                context.add("tipo", new JsonPrimitive(userUtterance));
             } else if (!tipo.equals("") && !ing.equals("")) {
+                userAction.add("userIntent", new JsonPrimitive("informacionTiendas"));
                 context.add("ing", new JsonPrimitive(ing));
-                //obtener info Tiendas disponibles
-                JsonObject obj = service.getTienda(tipo,ing);
-                if (!obj.get("tiendas").isJsonNull()) {
-                    userAction.add("userIntent", new JsonPrimitive("informacionTiendas"));
-                    //recorrer objeto tiendas y agregar a botones
-                    JsonArray buttons = obj.getAsJsonArray();
-                    userAction.add("botones", buttons);
-                }
             }
 
         }
