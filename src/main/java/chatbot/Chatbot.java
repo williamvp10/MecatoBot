@@ -70,15 +70,14 @@ public class Chatbot {
         JsonObject userAction = new JsonObject();
         //default case
         userAction.add("userIntent", new JsonPrimitive(""));
-        
+
         if (userInput.has("userUtterance")) {
             userUtterance = userInput.get("userUtterance").getAsString();
             userUtterance = userUtterance.replaceAll("%2C", ",");
         }
-         System.out.println("entrooo "+userUtterance); 
+        System.out.println("entrooo " + userUtterance);
         if (userUtterance.matches("(hola|holi|hello|hi|Hola|Hello)( como vas)?")) {
-            userAction.add("userIntent", new JsonPrimitive("saludoUsuario"));
-           userAction.add("userIntent", new JsonPrimitive("saludarusuario"));
+            userAction.add("userIntent", new JsonPrimitive("saludo"));
         } else if (userUtterance.matches("(Gracias|gracias|GRACIAS|thanks)|(thank you)")) {
             userAction.add("userIntent", new JsonPrimitive("agradecimiento"));
         } else {
@@ -90,7 +89,7 @@ public class Chatbot {
             }
             String currentTask = context.get("currentTask").getAsString();
             String botIntent = context.get("botIntent").getAsString();
-            if (userType!=null) {
+            if (userType != null) {
                 if (userType.trim().equals("requestTipos")) {
                     //obtener info tipos
                     JsonObject obj = service.getTipos();
@@ -108,7 +107,7 @@ public class Chatbot {
                         userAction.add("botones", buttons);
                         context.add("tipo", new JsonPrimitive(userUtterance));
                     }
-                } else if (userType.trim().equals("requestTiendas") ) {
+                } else if (userType.trim().equals("requestTiendas")) {
                     //obtener info Tiendas disponibles
                     JsonObject obj = service.getTienda(context.get("tipo").getAsString(), userUtterance);
                     if (!obj.get("tiendas").isJsonNull()) {
