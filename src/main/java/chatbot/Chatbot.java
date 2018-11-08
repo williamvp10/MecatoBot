@@ -199,7 +199,6 @@ public class Chatbot {
         out.add("botIntent", context.get("botIntent"));
         out.add("botUtterance", new JsonPrimitive(botUtterance));
         out.add("type", new JsonPrimitive(type));
-        out.add("buttons", buttons);
         System.out.println("context: " + context.toString());
         System.out.println("salida: " + out.toString());
         return out;
