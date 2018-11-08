@@ -70,12 +70,13 @@ public class Chatbot {
         JsonObject userAction = new JsonObject();
         System.out.println("entrooo "+userInput);
         //default case
-        userAction.add("userIntent", new JsonPrimitive(""));
-        System.out.println("userAction "+userAction);
+       
+        
         if (userInput.has("serUtterance")) {
             userUtterance = userInput.get("userUtterance").getAsString();
             userUtterance = userUtterance.replaceAll("%2C", ",");
         }
+         userAction.add("userIntent", new JsonPrimitive(""));
         if (userUtterance.matches("(hola|holi|hello|hi|Hola|Hello)( como vas)?")) {
             userAction.add("userIntent", new JsonPrimitive("saludo"));
            
