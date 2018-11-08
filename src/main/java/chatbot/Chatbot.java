@@ -52,6 +52,7 @@ public class Chatbot {
         updateContext(userAction);
 
         //step3: identify bot intent
+        System.out.println("context " + context.toString());
         identifyBotIntent();
         System.out.println("context " + context.toString());
         //step4: structure output
