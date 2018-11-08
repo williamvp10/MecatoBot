@@ -52,7 +52,6 @@ public class Chatbot {
         updateContext(userAction);
 
         //step3: identify bot intent
-        System.out.println("context " + context.toString());
         identifyBotIntent();
         System.out.println("context " + context.toString());
         //step4: structure output
@@ -167,11 +166,9 @@ public class Chatbot {
             botUtterance = " Que deseas en este instante? ";
             type = "ofrecerTipo";
             buttons = service.getTipos();
-        } else if (botIntent.equals("requestIngredientes")) {
-            System.out.println("entroooo");
+        } else if (botIntent.equals("requestIngredientes")) {;
              type = "ofrecerIngredientes";
             String tipo=context.get("tipo").getAsString();
-            System.out.println("t"+tipo);
            
             botUtterance = " Selecciona los ingredientes para tu " + context.get("tipo").getAsString();
             buttons = service.getIngredientes(tipo);
