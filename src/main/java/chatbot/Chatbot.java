@@ -173,7 +173,7 @@ public class Chatbot {
         } else if (botIntent.equals("requestTiendas")) {
             type = "ofrecerTiendas";
             botUtterance = " estas son las tiendas que ofrecen el producto que deseas, espero te haya sido de ayuda ";
-            buttons = service.getIngredientes(context.get("ing").toString());
+            buttons = service.getTienda(context.get("tipo").toString(),context.get("ing").toString());
         }
         out.add("botIntent", context.get("botIntent"));
         out.add("botUtterance", new JsonPrimitive(botUtterance));
