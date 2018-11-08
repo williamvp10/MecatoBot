@@ -176,22 +176,22 @@ public class Chatbot {
             botUtterance = "hola, que deseas en este instante? ";
             type = "saludar";
             System.out.println(service.getTipos().toString());
-            buttons = service.getTipos();
+            botUtterance+= service.getTipos();
         } else if (botIntent.equals("agradecimientoUsuario")) {
             botUtterance = "gracias por usar nuestro servicio, que tengas un buen dia!!";
             type = "agradecer";
         } else if (botIntent.equals("requestTipo")) {
             botUtterance = " Que deseas en este instante? ";
             type = "ofrecerTipo";
-            buttons = service.getTipos();
+            botUtterance+=service.getTipos();
         } else if (botIntent.equals("requestIngredientes")) {
             type = "ofrecerIngredientes";
             botUtterance = " Selecciona los ingredientes para tu " + context.get("tipo").getAsString();
-            buttons = service.getIngredientes(context.get("tipo").toString());
+            botUtterance+= service.getIngredientes(context.get("tipo").toString());
         } else if (botIntent.equals("requestTiendas")) {
             type = "ofrecerTiendas";
             botUtterance = " estas son las tiendas que ofrecen el producto que deseas, espero te haya sido de ayuda ";
-            buttons = service.getIngredientes(context.get("ing").toString());
+            botUtterance+= service.getIngredientes(context.get("ing").toString());
         }
         
         botUtterance+=""+buttons.getAsString();
