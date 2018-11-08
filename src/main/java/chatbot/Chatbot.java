@@ -83,8 +83,8 @@ public class Chatbot {
         } else {
             System.out.println("usuario : " + userInput);
             String userType = null;
-            if (userInput.has("userType")) {
-                userType = userInput.get("userType").getAsString();
+            if (userInput.has("payload")) {
+                userType = userInput.get("payload").getAsString();
                 userType = userUtterance.replaceAll("%2C", ",");
             }
             String currentTask = context.get("currentTask").getAsString();
@@ -100,6 +100,7 @@ public class Chatbot {
                     }
                 } else if (userType.trim().equals("requestIngredientes")) {
                     //obtener info ingredientes disponibles
+                    System.out.println(userInput.get("title").getAsString());
                     JsonObject obj = service.getIngredientes(userUtterance);
                     if (!obj.get("ingredientes").isJsonNull()) {
                         userAction.add("userIntent", new JsonPrimitive("informacionIngre"));
