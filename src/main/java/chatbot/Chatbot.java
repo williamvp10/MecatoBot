@@ -68,7 +68,7 @@ public class Chatbot {
     public JsonObject processUserInput(JsonObject userInput) throws IOException {
         String userUtterance = null;
         JsonObject userAction = new JsonObject();
-        System.out.println(userInput);
+        System.out.println("entrooo: "+userInput);
         //default case
         userAction.add("userIntent", new JsonPrimitive(""));
 
@@ -82,44 +82,44 @@ public class Chatbot {
         } else if (userUtterance.matches("(Gracias|gracias|GRACIAS|thanks)|(thank you)")) {
             userAction.add("userIntent", new JsonPrimitive("agradecimiento"));
         } else {
+            System.out.println("usuario : " + userInput);
             String userType = null;
             if (userInput.has("userType")) {
                 userType = userInput.get("userType").getAsString();
                 userType = userUtterance.replaceAll("%2C", ",");
             }
-            System.out.println("usuario : " + userUtterance);
-            String currentTask = context.get("currentTask").getAsString();
-            String botIntent = context.get("botIntent").getAsString();
-            if (userType!=null) {
-                if (userType.trim().equals("requestTipos")) {
-                    //obtener info tipos
-                    JsonObject obj = service.getTipos();
-                    if (!obj.isJsonNull()) {
-                        JsonArray buttons = obj.getAsJsonArray();
-                        userAction.add("userIntent", new JsonPrimitive("informacionTipos"));
-                        userAction.add("botones", buttons);
-                    }
-                } else if (userType.trim().equals("requestIngredientes")) {
-                    //obtener info ingredientes disponibles
-                    JsonObject obj = service.getIngredientes(userUtterance);
-                    if (!obj.get("ingredientes").isJsonNull()) {
-                        userAction.add("userIntent", new JsonPrimitive("informacionIngre"));
-                        JsonArray buttons = obj.getAsJsonArray();
-                        userAction.add("botones", buttons);
-                        context.add("tipo", new JsonPrimitive(userUtterance));
-                    }
-                } else if (userType.trim().equals("requestTiendas") ) {
-                    //obtener info Tiendas disponibles
-                    JsonObject obj = service.getTienda(context.get("tipo").getAsString(), userUtterance);
-                    if (!obj.get("tiendas").isJsonNull()) {
-                        userAction.add("userIntent", new JsonPrimitive("informacionTiendas"));
-                        //recorrer objeto tiendas y agregar a botones
-                        JsonArray buttons = obj.getAsJsonArray();
-                        userAction.add("botones", buttons);
-                    }
-                }
-
-            }
+//            String currentTask = context.get("currentTask").getAsString();
+//            String botIntent = context.get("botIntent").getAsString();
+//            if (userType!=null) {
+//                if (userType.trim().equals("requestTipos")) {
+//                    //obtener info tipos
+//                    JsonObject obj = service.getTipos();
+//                    if (!obj.isJsonNull()) {
+//                        JsonArray buttons = obj.getAsJsonArray();
+//                        userAction.add("userIntent", new JsonPrimitive("informacionTipos"));
+//                        userAction.add("botones", buttons);
+//                    }
+//                } else if (userType.trim().equals("requestIngredientes")) {
+//                    //obtener info ingredientes disponibles
+//                    JsonObject obj = service.getIngredientes(userUtterance);
+//                    if (!obj.get("ingredientes").isJsonNull()) {
+//                        userAction.add("userIntent", new JsonPrimitive("informacionIngre"));
+//                        JsonArray buttons = obj.getAsJsonArray();
+//                        userAction.add("botones", buttons);
+//                        context.add("tipo", new JsonPrimitive(userUtterance));
+//                    }
+//                } else if (userType.trim().equals("requestTiendas") ) {
+//                    //obtener info Tiendas disponibles
+//                    JsonObject obj = service.getTienda(context.get("tipo").getAsString(), userUtterance);
+//                    if (!obj.get("tiendas").isJsonNull()) {
+//                        userAction.add("userIntent", new JsonPrimitive("informacionTiendas"));
+//                        //recorrer objeto tiendas y agregar a botones
+//                        JsonArray buttons = obj.getAsJsonArray();
+//                        userAction.add("botones", buttons);
+//                    }
+//                }
+//
+//            }
         }
 
         return userAction;
