@@ -75,51 +75,48 @@ public class Chatbot {
             userUtterance = userInput.get("userUtterance").getAsString();
             userUtterance = userUtterance.replaceAll("%2C", ",");
         }
-        
+
         if (userUtterance.matches("(hola|holi|hello|hi|Hola|Hello)( como vas)?")) {
             userAction.add("userIntent", new JsonPrimitive("saludo"));
         } else if (userUtterance.matches("(Gracias|gracias|GRACIAS|thanks)|(thank you)")) {
             userAction.add("userIntent", new JsonPrimitive("agradecimiento"));
         } else {
-            System.out.println("usuario : " + userInput);
-            String userType = null;
-            if (userInput.has("userIntent")) {
-                userType = userInput.get("userIntent").getAsString();
-                userType = userUtterance.replaceAll("%2C", ",");
+            String tipo = "";
+            String ing = "";
+            try{
+                tipo = userUtterance.split(" ")[0];
+            }catch(Exception e){
+                tipo = "";
+            }
+            try{
+                ing = userUtterance.split(" ")[1];
+            }catch(Exception e){
+                ing = "";
             }
             String currentTask = context.get("currentTask").getAsString();
             String botIntent = context.get("botIntent").getAsString();
-            if (userType != null) {
-                if (userType.trim().equals("requestTipos")) {
-                    //obtener info tipos
-                    JsonObject obj = service.getTipos();
-                    if (!obj.isJsonNull()) {
-                        JsonArray buttons = obj.getAsJsonArray();
-                        userAction.add("userIntent", new JsonPrimitive("informacionTipos"));
-                        userAction.add("botones", buttons);
-                    }
-                } else if (userType.trim().equals("requestIngredientes")) {
-                    //obtener info ingredientes disponibles
-                    System.out.println(userInput.get("title").getAsString());
-                    JsonObject obj = service.getIngredientes(userUtterance);
-                    if (!obj.get("ingredientes").isJsonNull()) {
-                        userAction.add("userIntent", new JsonPrimitive("informacionIngre"));
-                        JsonArray buttons = obj.getAsJsonArray();
-                        userAction.add("botones", buttons);
-                        context.add("tipo", new JsonPrimitive(userUtterance));
-                    }
-                } else if (userType.trim().equals("requestTiendas")) {
-                    //obtener info Tiendas disponibles
-                    JsonObject obj = service.getTienda(context.get("tipo").getAsString(), userUtterance);
-                    if (!obj.get("tiendas").isJsonNull()) {
-                        userAction.add("userIntent", new JsonPrimitive("informacionTiendas"));
-                        //recorrer objeto tiendas y agregar a botones
-                        JsonArray buttons = obj.getAsJsonArray();
-                        userAction.add("botones", buttons);
-                    }
-                }
 
+            if (!tipo.equals("") && ing.equals("")) {
+                //obtener info ingredientes disponibles
+                System.out.println(userInput.get("title").getAsString());
+                JsonObject obj = service.getIngredientes(userUtterance);
+                if (!obj.get("ingredientes").isJsonNull()) {
+                    userAction.add("userIntent", new JsonPrimitive("informacionIngre"));
+                    JsonArray buttons = obj.getAsJsonArray();
+                    userAction.add("botones", buttons);
+                    context.add("tipo", new JsonPrimitive(userUtterance));
+                }
+            } else if (!tipo.equals("") && !ing.equals("")) {
+                //obtener info Tiendas disponibles
+                JsonObject obj = service.getTienda(context.get("tipo").getAsString(), userUtterance);
+                if (!obj.get("tiendas").isJsonNull()) {
+                    userAction.add("userIntent", new JsonPrimitive("informacionTiendas"));
+                    //recorrer objeto tiendas y agregar a botones
+                    JsonArray buttons = obj.getAsJsonArray();
+                    userAction.add("botones", buttons);
+                }
             }
+
         }
 
         return userAction;
@@ -195,7 +192,8 @@ public class Chatbot {
             botUtterance = " estas son las tiendas que ofrecen el producto que deseas, espero te haya sido de ayuda ";
             buttons = service.getIngredientes(context.get("ingredientes").toString());
         }
-
+        
+        botUtterance+=buttons.getAsString();
         out.add("botIntent", context.get("botIntent"));
         out.add("botUtterance", new JsonPrimitive(botUtterance));
         out.add("type", new JsonPrimitive(type));
