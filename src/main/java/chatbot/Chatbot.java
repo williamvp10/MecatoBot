@@ -83,8 +83,8 @@ public class Chatbot {
         } else {
             System.out.println("usuario : " + userInput);
             String userType = null;
-            if (userInput.has("payload")) {
-                userType = userInput.get("payload").getAsString();
+            if (userInput.has("userIntent")) {
+                userType = userInput.get("userIntent").getAsString();
                 userType = userUtterance.replaceAll("%2C", ",");
             }
             String currentTask = context.get("currentTask").getAsString();
