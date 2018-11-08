@@ -99,7 +99,7 @@ public class Chatbot {
             if (!tipo.equals("") && ing.equals("")) {
                 //obtener info ingredientes disponibles
                 System.out.println(userInput.get("title").getAsString());
-                JsonObject obj = service.getIngredientes(userUtterance);
+                JsonObject obj = service.getIngredientes(tipo);
                 if (!obj.get("ingredientes").isJsonNull()) {
                     userAction.add("userIntent", new JsonPrimitive("informacionIngre"));
                     JsonArray buttons = obj.getAsJsonArray();
@@ -107,8 +107,9 @@ public class Chatbot {
                     context.add("tipo", new JsonPrimitive(userUtterance));
                 }
             } else if (!tipo.equals("") && !ing.equals("")) {
+                context.add("ing", new JsonPrimitive(ing));
                 //obtener info Tiendas disponibles
-                JsonObject obj = service.getTienda(context.get("tipo").getAsString(), userUtterance);
+                JsonObject obj = service.getTienda(tipo,ing);
                 if (!obj.get("tiendas").isJsonNull()) {
                     userAction.add("userIntent", new JsonPrimitive("informacionTiendas"));
                     //recorrer objeto tiendas y agregar a botones
@@ -190,7 +191,7 @@ public class Chatbot {
         } else if (botIntent.equals("requestTiendas")) {
             type = "ofrecerTiendas";
             botUtterance = " estas son las tiendas que ofrecen el producto que deseas, espero te haya sido de ayuda ";
-            buttons = service.getIngredientes(context.get("ingredientes").toString());
+            buttons = service.getIngredientes(context.get("ing").toString());
         }
         
         botUtterance+=buttons.getAsString();
