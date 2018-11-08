@@ -175,30 +175,28 @@ public class Chatbot {
         if (botIntent.equals("saludoUsuario")) {
             botUtterance = "hola, que deseas en este instante? ";
             type = "saludar";
-           
-            botUtterance+=" "+ service.getTipos().getAsString();
-             System.out.println(botUtterance);
+            System.out.println(service.getTipos().toString());
+            buttons = service.getTipos();
         } else if (botIntent.equals("agradecimientoUsuario")) {
             botUtterance = "gracias por usar nuestro servicio, que tengas un buen dia!!";
             type = "agradecer";
         } else if (botIntent.equals("requestTipo")) {
             botUtterance = " Que deseas en este instante? ";
             type = "ofrecerTipo";
-            botUtterance+=service.getTipos().getAsString();
+            buttons = service.getTipos();
         } else if (botIntent.equals("requestIngredientes")) {
             type = "ofrecerIngredientes";
             botUtterance = " Selecciona los ingredientes para tu " + context.get("tipo").getAsString();
-            botUtterance+= service.getIngredientes(context.get("tipo").toString()).getAsString();
+            buttons = service.getIngredientes(context.get("tipo").toString());
         } else if (botIntent.equals("requestTiendas")) {
             type = "ofrecerTiendas";
             botUtterance = " estas son las tiendas que ofrecen el producto que deseas, espero te haya sido de ayuda ";
-            botUtterance+= service.getIngredientes(context.get("ing").toString()).getAsString();
+            buttons = service.getIngredientes(context.get("ing").toString());
         }
-        
-        System.out.println("bot---- "+botUtterance);
         out.add("botIntent", context.get("botIntent"));
         out.add("botUtterance", new JsonPrimitive(botUtterance));
         out.add("type", new JsonPrimitive(type));
+        out.add("buttons", buttons);
         System.out.println("context: " + context.toString());
         System.out.println("salida: " + out.toString());
         return out;
