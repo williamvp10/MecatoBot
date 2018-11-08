@@ -50,10 +50,10 @@ public class Chatbot {
 
         //step2: update context
         updateContext(userAction);
-        System.out.println("context " + context.toString());
+
         //step3: identify bot intent
         identifyBotIntent();
-
+        System.out.println("context " + context.toString());
         //step4: structure output
         JsonObject out = getBotOutput();
         System.out.println("out " + out.toString());
