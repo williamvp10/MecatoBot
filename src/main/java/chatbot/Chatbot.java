@@ -93,6 +93,7 @@ public class Chatbot {
             }catch(Exception e){
                 ing = "";
             }
+            System.out.println("tipo "+tipo+" ing"+ing);
             String currentTask = context.get("currentTask").getAsString();
             String botIntent = context.get("botIntent").getAsString();
 
