@@ -123,13 +123,10 @@ public class Chatbot {
             context.add("currentTask", new JsonPrimitive("saludoUsuario"));
         } else if (userIntent.equals("informacionTipos")) {
             context.add("currentTask", new JsonPrimitive("request"));
-            context.add("tipos", userAction.get("botones"));
         } else if (userIntent.equals("informacionIngre")) {
-            context.add("currentTask", new JsonPrimitive("request"));
-            context.add("ingredientes", userAction.get("botones"));
+            context.add("currentTask", new JsonPrimitive("ingredientes"));
         } else if (userIntent.equals("informacionTiendas")) {
-            context.add("currentTask", new JsonPrimitive("request"));
-            context.add("tiendas", userAction.get("botones"));
+            context.add("currentTask", new JsonPrimitive("tiendas"));
         } else if (userIntent.equals("agradecimiento")) {
             context.add("currentTask", new JsonPrimitive("agradecimientoUsuario"));
         }
