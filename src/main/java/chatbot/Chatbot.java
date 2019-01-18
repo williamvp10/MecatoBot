@@ -81,31 +81,51 @@ public class Chatbot {
         } else if (userUtterance.matches("(Gracias|gracias|GRACIAS|thanks)|(thank you)")) {
             userAction.add("userIntent", new JsonPrimitive("agradecimiento"));
         } else {
-            String tipo = "";
-            String ing = "";
-            try {
-                tipo = userUtterance.split(" ")[0];
-            } catch (Exception e) {
-                tipo = "";
+            String userType = null;
+            if (userInput.has("userType")) {
+                userType = userInput.get("userType").getAsString();
+                userType = userUtterance.replaceAll("%2C", ",");
             }
-            try {
-                ing = userUtterance.split(" ")[1];
-            } catch (Exception e) {
-                ing = "";
-            }
-            System.out.println("tipo " + tipo + " ing" + ing);
+            System.out.println("usuario : " + userUtterance);
             String currentTask = context.get("currentTask").getAsString();
             String botIntent = context.get("botIntent").getAsString();
+            if (userType!=null) {
+                 if (userType.trim().equals("requestIngredientes")) {
+                    //obtener info ingredientes disponibles
+                     userAction.add("userIntent", new JsonPrimitive("informacionIngre"));
+                    context.add("tipo", new JsonPrimitive(userUtterance));
+                    
+                } else if (userType.trim().equals("requestTiendas") ) {
+                    userAction.add("userIntent", new JsonPrimitive("informacionTiendas"));
+                    context.add("ing", new JsonPrimitive(userUtterance));
+                }
 
-            if (!tipo.equals("") && ing.equals("")) {
-                //obtener info ingredientes disponibles
-
-                userAction.add("userIntent", new JsonPrimitive("informacionIngre"));
-                context.add("tipo", new JsonPrimitive(userUtterance));
-            } else if (!tipo.equals("") && !ing.equals("")) {
-                userAction.add("userIntent", new JsonPrimitive("informacionTiendas"));
-                context.add("ing", new JsonPrimitive(ing));
             }
+//            String tipo = "";
+//            String ing = "";
+//            try {
+//                tipo = userUtterance.split(" ")[0];
+//            } catch (Exception e) {
+//                tipo = "";
+//            }
+//            try {
+//                ing = userUtterance.split(" ")[1];
+//            } catch (Exception e) {
+//                ing = "";
+//            }
+//            System.out.println("tipo " + tipo + " ing" + ing);
+//            String currentTask = context.get("currentTask").getAsString();
+//            String botIntent = context.get("botIntent").getAsString();
+//
+//            if (!tipo.equals("") && ing.equals("")) {
+//                //obtener info ingredientes disponibles
+//
+//                userAction.add("userIntent", new JsonPrimitive("informacionIngre"));
+//                context.add("tipo", new JsonPrimitive(userUtterance));
+//            } else if (!tipo.equals("") && !ing.equals("")) {
+//                userAction.add("userIntent", new JsonPrimitive("informacionTiendas"));
+//                context.add("ing", new JsonPrimitive(ing));
+//            }
 
         }
 
