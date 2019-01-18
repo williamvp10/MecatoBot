@@ -36,7 +36,7 @@ public class WebServer {
                 String keyValueSplitter = "=";
                 String[] params = body.split(splitChar);
 
-                String userUtterance = "noneSaid";
+                String userUtterance = "noneSaid", userType = "noneSaid";
 
                 for (int i = 0; i < params.length; i++) {
 
@@ -50,8 +50,15 @@ public class WebServer {
                         }
                         userUtterance = userUtterance.replaceAll("%20", " ");
                         userUtterance = userUtterance.replaceAll("%3A", ":");
+                    } else if (sv[0].equals("userType")) {
+                        if (sv.length > 0) {
+                            userType = sv[1];
+                        } else {
+                            userType = "";
+                        }
+                        userType = userType.replaceAll("%20", " ");
+                        userType = userType.replaceAll("%3A", ":");
                     }
-
                 }
 
                 if (!userUtterance.equals("noneSaid")) {
@@ -60,8 +67,11 @@ public class WebServer {
 
                     JsonObject userInput = new JsonObject();
                     userInput.add("userUtterance", new JsonPrimitive(userUtterance));
-
-                    String botResponse=null;
+                    if (!userType.equals("noneSaid")) {
+                        System.out.println("type:"+userType);
+                         userInput.add("userType", new JsonPrimitive(userType));
+                    }
+                    String botResponse = null;
                     try {
                         botResponse = bot.processFB(userInput);
                     } catch (IOException ex) {
