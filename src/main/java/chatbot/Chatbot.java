@@ -81,12 +81,12 @@ public class Chatbot {
         } else if (userUtterance.matches("(Gracias|gracias|GRACIAS|thanks)|(thank you)")) {
             userAction.add("userIntent", new JsonPrimitive("agradecimiento"));
         } else {
-            String userType = null;
+            String userType = " n ";
             if (userInput.has("userType")) {
                 userType = userInput.get("userType").getAsString();
                 userType = userUtterance.replaceAll("%2C", ",");
             }
-            System.out.println("usuario : " + userUtterance);
+            System.out.println("usuario : " + userType);
             String currentTask = context.get("currentTask").getAsString();
             String botIntent = context.get("botIntent").getAsString();
             if (userType!=null) {
