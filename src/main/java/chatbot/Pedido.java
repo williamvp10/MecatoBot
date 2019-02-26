@@ -71,11 +71,4 @@ public class Pedido {
         return tienda;
     }
 
-//    public JsonObject getIngedientesJson() {
-//        Gson gsonBuilder = new GsonBuilder().create();
-//        String ing = gsonBuilder.toJson(this.ingredientes);
-//        JsonObject json = (new JsonParser()).parse(ing).getAsJsonObject();
-//        return json;
-//    }
-
 }
