@@ -1,6 +1,7 @@
 package chatbot;
 
 import Services.Service;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -9,13 +10,14 @@ import org.apache.http.client.ClientProtocolException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 
 public class Chatbot {
 
     JsonObject context;
     Service service;
-    
-    
+    Pedido pedido;
+
     public static void main(String[] args) throws IOException {
         Chatbot c = new Chatbot();
         Scanner scanner = new Scanner(System.in);
@@ -89,15 +91,21 @@ public class Chatbot {
             System.out.println("usuario : " + userType);
             String currentTask = context.get("currentTask").getAsString();
             String botIntent = context.get("botIntent").getAsString();
-            if (userType!=null) {
-                 if (userType.trim().equals("requestIngredientes")) {
+            if (userType != null) {
+                if (userType.trim().equals("requestIngredientes")) {
                     //obtener info ingredientes disponibles
-                     userAction.add("userIntent", new JsonPrimitive("informacionIngre"));
+                    userAction.add("userIntent", new JsonPrimitive("informacionIngre"));
                     context.add("tipo", new JsonPrimitive(userUtterance));
-                    
-                } else if (userType.trim().equals("requestTiendas") ) {
+                    pedido = new Pedido();
+                    pedido.setTipo(userUtterance);
+                } else if (userType.trim().equals("requestTiendas")) {
                     userAction.add("userIntent", new JsonPrimitive("informacionTiendas"));
                     context.add("ing", new JsonPrimitive(userUtterance));
+                    pedido.setIngredientes(userUtterance);
+                } else if (userType.trim().equals("confirmar pedido")) {
+                    userAction.add("userIntent", new JsonPrimitive("confirmar pedido"));
+                    context.add("tipo", new JsonPrimitive(userUtterance));
+                    pedido.setTienda(userUtterance);
                 }
 
             }
@@ -144,6 +152,8 @@ public class Chatbot {
             context.add("currentTask", new JsonPrimitive("ingredientes"));
         } else if (userIntent.equals("informacionTiendas")) {
             context.add("currentTask", new JsonPrimitive("tiendas"));
+        } else if (userIntent.equals("confirmar pedido")) {
+            context.add("currentTask", new JsonPrimitive("confirmar"));
         } else if (userIntent.equals("agradecimiento")) {
             context.add("currentTask", new JsonPrimitive("agradecimientoUsuario"));
         }
@@ -161,6 +171,8 @@ public class Chatbot {
             context.add("botIntent", new JsonPrimitive("requestIngredientes"));
         } else if (currentTask.equals("tiendas")) {
             context.add("botIntent", new JsonPrimitive("requestTiendas"));
+        } else if (currentTask.equals("confirmar")) {
+            context.add("botIntent", new JsonPrimitive("requestConfirmar"));
         }
 
     }
@@ -185,19 +197,25 @@ public class Chatbot {
             type = "ofrecerTipo";
             buttons = service.getTipos();
         } else if (botIntent.equals("requestIngredientes")) {
-             type = "ofrecerIngredientes";
-            String tipo=context.get("tipo").getAsString();
-           
+            type = "ofrecerIngredientes";
+            String tipo = context.get("tipo").getAsString();
+
             botUtterance = " Selecciona los ingredientes para tu " + context.get("tipo").getAsString();
             buttons = service.getIngredientes(tipo);
         } else if (botIntent.equals("requestTiendas")) {
-            String tipo=context.get("tipo").getAsString();
-            String ing=context.get("ing").getAsString();
+            String tipo = context.get("tipo").getAsString();
+            String ing = context.get("ing").getAsString();
             type = "ofrecerTiendas";
             botUtterance = " estas son las tiendas que ofrecen el producto que deseas, espero te haya sido de ayuda ";
-            buttons = service.getTienda(tipo,ing);
+            buttons = service.getTienda(tipo, ing);
+        } else if (botIntent.equals("requestConfirmar")) {
+            type = "confirmarPedido";
+            botUtterance = " Confirme su pedido ";
+            JsonParser parser = new JsonParser();
+            String infoPedido = new Gson().toJson(this.pedido);
+            out.add("Pedido", (JsonObject) parser.parse(infoPedido));
         }
-        
+
         out.add("botIntent", context.get("botIntent"));
         out.add("botUtterance", new JsonPrimitive(botUtterance));
         out.add("type", new JsonPrimitive(type));
