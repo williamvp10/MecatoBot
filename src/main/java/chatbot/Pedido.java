@@ -50,7 +50,7 @@ public class Pedido {
     public void setIngredientes(String ingredientes) {
         this.ingredientes.clear();
         String[] in = ingredientes.split(",");
-        for (int i = 0; i < in.length; i++) {
+        for (int i = 1; i < in.length; i++) {
             this.ingredientes.add(in[i]);
         }
     }
