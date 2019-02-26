@@ -5,11 +5,8 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Scanner;
 
-import org.apache.http.client.ClientProtocolException;
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
 public class Chatbot {
@@ -106,6 +103,9 @@ public class Chatbot {
                     userAction.add("userIntent", new JsonPrimitive("confirmar pedido"));
                     context.add("tipo", new JsonPrimitive(userUtterance));
                     pedido.setTienda(userUtterance);
+                }else if (userType.trim().equals("confirmandoPedido")) {
+                    userAction.add("userIntent", new JsonPrimitive("confirmandoPedido"));
+                     userAction.add("userIntent", new JsonPrimitive("finalizarPedido"));
                 }
 
             }
@@ -156,6 +156,8 @@ public class Chatbot {
             context.add("currentTask", new JsonPrimitive("confirmar"));
         } else if (userIntent.equals("agradecimiento")) {
             context.add("currentTask", new JsonPrimitive("agradecimientoUsuario"));
+        } else if (userIntent.equals("finalizarPedido")) {
+            context.add("currentTask", new JsonPrimitive("finalizarPedido"));
         }
     }
 
@@ -173,6 +175,8 @@ public class Chatbot {
             context.add("botIntent", new JsonPrimitive("requestTiendas"));
         } else if (currentTask.equals("confirmar")) {
             context.add("botIntent", new JsonPrimitive("requestConfirmar"));
+        } else if (currentTask.equals("finalizarPedido")) {
+            context.add("botIntent", new JsonPrimitive("requestFinalizarPedido"));
         }
 
     }
@@ -192,6 +196,9 @@ public class Chatbot {
         } else if (botIntent.equals("agradecimientoUsuario")) {
             botUtterance = "gracias por usar nuestro servicio, que tengas un buen dia!!";
             type = "agradecer";
+        } else if (botIntent.equals("requestFinalizarPedido")) {
+            botUtterance = " tu pedido ha sido procesado, estaremos alla en poco tiempo";
+            type = "finalizar";
         } else if (botIntent.equals("requestTipo")) {
             botUtterance = " Que deseas en este instante? ";
             type = "ofrecerTipo";
