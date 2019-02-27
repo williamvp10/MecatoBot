@@ -105,7 +105,11 @@ public class Chatbot {
                     pedido.setTienda(userUtterance);
                 }else if (userType.trim().equals("confirmandoPedido")) {
                     userAction.add("userIntent", new JsonPrimitive("confirmandoPedido"));
+                    if(userUtterance.equals("Si")){
                      userAction.add("userIntent", new JsonPrimitive("finalizarPedido"));
+                    }else{
+                      userAction.add("userIntent", new JsonPrimitive("saludo"));
+                    }
                 }
 
             }
