@@ -148,11 +148,11 @@ public class Chatbot1 {
             JsonObject b = null;
             b = new JsonObject();
             b.add("titulo", new JsonPrimitive("continuar"));
-            b.add("respuesta", new JsonPrimitive("bye"));
+            b.add("respuesta", new JsonPrimitive("requestbye"));
             buttons.add(b);
             b = new JsonObject();
             b.add("titulo", new JsonPrimitive("salir"));
-            b.add("respuesta", new JsonPrimitive("error"));
+            b.add("respuesta", new JsonPrimitive("requesterror"));
             buttons.add(b);
             out.add("buttons", buttons);
         } else if (botIntent.equals("botsaludo")) {
