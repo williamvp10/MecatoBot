@@ -72,6 +72,7 @@ public class Chatbot1 {
             userUtterance = userInput.get("userUtterance").getAsString();
             userUtterance = userUtterance.replaceAll("%2C", ",");
         }
+
         if (userUtterance.matches("hola")) {
             userAction.add("userIntent", new JsonPrimitive("intenthola"));
         } else {
@@ -90,6 +91,8 @@ public class Chatbot1 {
                     userAction.add("userIntent", new JsonPrimitive("intentbye"));
                     context.add("bye", new JsonPrimitive(userUtterance));
 
+                } else {
+                    userAction.add("userIntent", new JsonPrimitive("intenterror"));
                 }
             }
         }
@@ -100,18 +103,24 @@ public class Chatbot1 {
         //copy userIntent
         context.add("userIntent", userAction.get("userIntent"));
         String userIntent = context.get("userIntent").getAsString();
-        if (userIntent.equals("intenthola")) {
+
+        if (userIntent.equals("intenterror")) {
+            context.add("currentTask", new JsonPrimitive("taskerror"));
+        } else if (userIntent.equals("intenthola")) {
             context.add("currentTask", new JsonPrimitive("taskhola"));
         } else if (userIntent.equals("intentsaludo")) {
             context.add("currentTask", new JsonPrimitive("tasksaludo"));
         } else if (userIntent.equals("intentbye")) {
             context.add("currentTask", new JsonPrimitive("taskbye"));
         }
+
     }
 
     public void identifyBotIntent() {
         String currentTask = context.get("currentTask").getAsString();
-        if (currentTask.equals("taskhola")) {
+        if (currentTask.equals("taskerror")) {
+            context.add("botIntent", new JsonPrimitive("boterror"));
+        } else if (currentTask.equals("taskhola")) {
             context.add("botIntent", new JsonPrimitive("bothola"));
         } else if (currentTask.equals("tasksaludo")) {
             context.add("botIntent", new JsonPrimitive("botsaludo"));
@@ -127,17 +136,23 @@ public class Chatbot1 {
         JsonArray buttons = new JsonArray();
         String botUtterance = "";
         String type = "";
-        if (botIntent.equals("bothola")) {
+
+        if (botIntent.equals("boterror")) {
+            botUtterance = "nmnmnm ";
+            type = "error";
+            JsonObject b = null;
+            out.add("buttons", buttons);
+        } else if (botIntent.equals("bothola")) {
             botUtterance = "hola ";
             type = "saludo";
             JsonObject b = null;
             b = new JsonObject();
             b.add("titulo", new JsonPrimitive("continuar"));
-            b.add("respuesta", new JsonPrimitive("requestbye"));
+            b.add("respuesta", new JsonPrimitive("bye"));
             buttons.add(b);
             b = new JsonObject();
             b.add("titulo", new JsonPrimitive("salir"));
-            b.add("respuesta", new JsonPrimitive("requesterror"));
+            b.add("respuesta", new JsonPrimitive("error"));
             buttons.add(b);
             out.add("buttons", buttons);
         } else if (botIntent.equals("botsaludo")) {
@@ -150,7 +165,7 @@ public class Chatbot1 {
             buttons.add(b);
             b = new JsonObject();
             b.add("titulo", new JsonPrimitive("salir"));
-            b.add("respuesta", new JsonPrimitive("error"));
+            b.add("respuesta", new JsonPrimitive("requesterror"));
             buttons.add(b);
             out.add("buttons", buttons);
         } else if (botIntent.equals("botbye")) {
