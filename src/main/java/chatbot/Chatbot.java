@@ -2,6 +2,7 @@ package chatbot;
 
 import Services.Service;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -226,7 +227,6 @@ public class Chatbot {
             String infoPedido = new Gson().toJson(this.pedido);
             out.add("Pedido", (JsonObject) parser.parse(infoPedido));
         }
-
         out.add("botIntent", context.get("botIntent"));
         out.add("botUtterance", new JsonPrimitive(botUtterance));
         out.add("type", new JsonPrimitive(type));
@@ -235,15 +235,5 @@ public class Chatbot {
         System.out.println("salida: " + out.toString());
         return out;
     }
-
-    private String getPlaceDescription() {
-        return context.get("placeName").getAsString();
-    }
-
-    private String getTimeDescription(String timeOfWeather) {
-        if (timeOfWeather.equals("current")) {
-            return "now";
-        }
-        return null;
-    }
+    
 }
