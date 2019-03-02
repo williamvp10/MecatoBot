@@ -203,7 +203,7 @@ public class Chatbot1 {
             e = new JsonObject();
             e.add("titulo", new JsonPrimitive("selectcarro2"));
             e.add("subtitulo", new JsonPrimitive("requestcarro2"));
-            e.add("url", new JsonPrimitive("requesthttps://static.iris.net.co/dinero/upload/images/2012/4/17/149033_231847_5.jpg"));
+            e.add("url", new JsonPrimitive("https://static.iris.net.co/dinero/upload/images/2012/4/17/149033_231847_5.jpg"));
 
             b = new JsonObject();
             b.add("titulo", new JsonPrimitive("carro2"));
@@ -213,7 +213,7 @@ public class Chatbot1 {
             e = new JsonObject();
             e.add("titulo", new JsonPrimitive("selectcarro3"));
             e.add("subtitulo", new JsonPrimitive("requestcarro3"));
-            e.add("url", new JsonPrimitive("requesthttps://static.iris.net.co/dinero/upload/images/2012/4/17/149038_23340_5.jpg"));
+            e.add("url", new JsonPrimitive("https://static.iris.net.co/dinero/upload/images/2012/4/17/149038_23340_5.jpg"));
 
             b = new JsonObject();
             b.add("titulo", new JsonPrimitive("carro3"));
@@ -223,7 +223,7 @@ public class Chatbot1 {
             e = new JsonObject();
             e.add("titulo", new JsonPrimitive("selectcarro4"));
             e.add("subtitulo", new JsonPrimitive("requestcarro4"));
-            e.add("url", new JsonPrimitive("requesthttps://static.iris.net.co/dinero/upload/images/2012/4/17/149040_233825_5.jpg"));
+            e.add("url", new JsonPrimitive("https://static.iris.net.co/dinero/upload/images/2012/4/17/149040_233825_5.jpg"));
 
             b = new JsonObject();
             b.add("titulo", new JsonPrimitive("carro4"));
