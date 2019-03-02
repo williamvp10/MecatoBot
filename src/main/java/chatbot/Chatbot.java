@@ -202,7 +202,7 @@ public class Chatbot {
             botUtterance = "gracias por usar nuestro servicio, que tengas un buen dia!!";
             type = "agradecer";
         } else if (botIntent.equals("requestFinalizarPedido")) {
-            botUtterance = " tu pedido ha sido procesado, estaremos alla en poco tiempo";
+            botUtterance = " tu pedido ha sido procesado, estarémos allá en poco tiempo";
             type = "finalizar";
         } else if (botIntent.equals("requestTipo")) {
             botUtterance = " Que deseas en este instante? ";
