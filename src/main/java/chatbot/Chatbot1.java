@@ -91,6 +91,10 @@ public class Chatbot1 {
                     userAction.add("userIntent", new JsonPrimitive("intentbye"));
                     context.add("bye", new JsonPrimitive(userUtterance));
 
+                } else if (userType.trim().equals("requestvisualizarCarro")) {
+                    userAction.add("userIntent", new JsonPrimitive("intentvisualizarCarro"));
+                    context.add("visualizarCarro", new JsonPrimitive(userUtterance));
+
                 } else {
                     userAction.add("userIntent", new JsonPrimitive("intenterror"));
                 }
@@ -112,8 +116,9 @@ public class Chatbot1 {
             context.add("currentTask", new JsonPrimitive("tasksaludo"));
         } else if (userIntent.equals("intentbye")) {
             context.add("currentTask", new JsonPrimitive("taskbye"));
+        } else if (userIntent.equals("intentvisualizarCarro")) {
+            context.add("currentTask", new JsonPrimitive("taskvisualizarCarro"));
         }
-
     }
 
     public void identifyBotIntent() {
@@ -126,6 +131,8 @@ public class Chatbot1 {
             context.add("botIntent", new JsonPrimitive("botsaludo"));
         } else if (currentTask.equals("taskbye")) {
             context.add("botIntent", new JsonPrimitive("botbye"));
+        } else if (currentTask.equals("taskvisualizarCarro")) {
+            context.add("botIntent", new JsonPrimitive("botvisualizarCarro"));
         }
     }
 
@@ -176,6 +183,38 @@ public class Chatbot1 {
             b.add("titulo", new JsonPrimitive("regresar"));
             b.add("respuesta", new JsonPrimitive("requestsaludo"));
             buttons.add(b);
+            out.add("buttons", buttons);
+        } else if (botIntent.equals("botvisualizarCarro")) {
+            type = "visualizarCarro";
+            botUtterance = "escoja Carro";
+            JsonObject b = null;
+            JsonArray elements = new JsonArray();
+            JsonObject e = null;
+            e = new JsonObject();
+            e.add("titulo", new JsonPrimitive("selectcarro1"));
+            e.add("subtitulo", new JsonPrimitive("requestCarro1"));
+            e.add("url", new JsonPrimitive("https://static.iris.net.co/dinero/upload/images/2012/4/17/149034_232140_5.jpg"));
+
+            b = new JsonObject();
+            b.add("titulo", new JsonPrimitive("Carro1"));
+            b.add("respuesta", new JsonPrimitive("requestbye"));
+            e.add("buttons", b);
+            elements.add(e);
+            e = new JsonObject();
+            e.add("titulo", new JsonPrimitive("selectcarro2"));
+            e.add("subtitulo", new JsonPrimitive("requestcarro2"));
+            e.add("url", new JsonPrimitive("https://static.iris.net.co/dinero/upload/images/2012/4/17/149033_231847_5.jpg"));
+
+            b = new JsonObject();
+            b.add("titulo", new JsonPrimitive("carro2"));
+            b.add("respuesta", new JsonPrimitive("requestbye"));
+            e.add("buttons", b);
+            elements.add(e);
+            b = new JsonObject();
+            b.add("titulo", new JsonPrimitive("enviar"));
+            b.add("respuesta", new JsonPrimitive("requestbye"));
+            buttons.add(b);
+            out.add("elements", elements);
             out.add("buttons", buttons);
         }
         out.add("botIntent", context.get("botIntent"));
