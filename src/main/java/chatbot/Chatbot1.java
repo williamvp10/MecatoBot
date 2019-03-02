@@ -193,7 +193,7 @@ public class Chatbot1 {
             e = new JsonObject();
             e.add("titulo", new JsonPrimitive("selectcarro1"));
             e.add("subtitulo", new JsonPrimitive("requestCarro1"));
-            e.add("url", new JsonPrimitive("requesthttps://static.iris.net.co/dinero/upload/images/2012/4/17/149034_232140_5.jpg"));
+            e.add("url", new JsonPrimitive("https://static.iris.net.co/dinero/upload/images/2012/4/17/149034_232140_5.jpg"));
 
             b = new JsonObject();
             b.add("titulo", new JsonPrimitive("Carro1"));
@@ -203,7 +203,7 @@ public class Chatbot1 {
             e = new JsonObject();
             e.add("titulo", new JsonPrimitive("selectcarro2"));
             e.add("subtitulo", new JsonPrimitive("requestcarro2"));
-            e.add("url", new JsonPrimitive("requesthttps://static.iris.net.co/dinero/upload/images/2012/4/17/149033_231847_5.jpg"));
+            e.add("url", new JsonPrimitive("https://static.iris.net.co/dinero/upload/images/2012/4/17/149033_231847_5.jpg"));
 
             b = new JsonObject();
             b.add("titulo", new JsonPrimitive("carro2"));
