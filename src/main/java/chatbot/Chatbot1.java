@@ -110,7 +110,7 @@ public class Chatbot1 {
         if (userIntent.equals("intenterror")) {
             context.add("currentTask", new JsonPrimitive("taskerror"));
         } else if (userIntent.equals("intenthola")) {
-            context.add("currentTask", new JsonPrimitive("taskhola"));
+            context.add("currentTask", new JsonPrimitive("taskProducto"));
         } else if (userIntent.equals("intentProducto")) {
             context.add("currentTask", new JsonPrimitive("taskProducto"));
         } else if (userIntent.equals("intenthi")) {
