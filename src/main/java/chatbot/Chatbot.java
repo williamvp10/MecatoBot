@@ -211,7 +211,6 @@ public class Chatbot {
         } else if (botIntent.equals("requestIngredientes")) {
             type = "ofrecerIngredientes";
             String tipo = context.get("tipo").getAsString();
-
             botUtterance = " Selecciona los ingredientes para tu " + context.get("tipo").getAsString();
             buttons = service.getIngredientes(tipo);
         } else if (botIntent.equals("requestTiendas")) {

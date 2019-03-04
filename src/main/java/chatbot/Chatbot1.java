@@ -1,6 +1,7 @@
 package chatbot;
 
 import Services.Service;
+import Services.Service1;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import com.google.gson.JsonParser;
 public class Chatbot1 {
 
     JsonObject context;
+    Service1 service;
 
     public static void main(String[] args) throws IOException {
         Chatbot c = new Chatbot();
@@ -39,6 +41,7 @@ public class Chatbot1 {
     public Chatbot1() {
         context = new JsonObject();
         context.add("currentTask", new JsonPrimitive("none"));
+        service = new Service1();
     }
 
     public JsonObject process(JsonObject userInput) throws IOException {
@@ -83,17 +86,13 @@ public class Chatbot1 {
             }
 
             if (userType != null) {
-                if (userType.trim().equals("requestsaludo")) {
-                    userAction.add("userIntent", new JsonPrimitive("intentsaludo"));
-                    context.add("saludo", new JsonPrimitive(userUtterance));
+                if (userType.trim().equals("requestProducto")) {
+                    userAction.add("userIntent", new JsonPrimitive("intentProducto"));
+                    context.add("Producto", new JsonPrimitive(userUtterance));
 
-                } else if (userType.trim().equals("requestbye")) {
-                    userAction.add("userIntent", new JsonPrimitive("intentbye"));
-                    context.add("bye", new JsonPrimitive(userUtterance));
-
-                } else if (userType.trim().equals("requestvisualizarCarro")) {
-                    userAction.add("userIntent", new JsonPrimitive("intentvisualizarCarro"));
-                    context.add("visualizarCarro", new JsonPrimitive(userUtterance));
+                } else if (userType.trim().equals("requesthi")) {
+                    userAction.add("userIntent", new JsonPrimitive("intenthi"));
+                    context.add("hi", new JsonPrimitive(userUtterance));
 
                 } else {
                     userAction.add("userIntent", new JsonPrimitive("intenterror"));
@@ -112,12 +111,10 @@ public class Chatbot1 {
             context.add("currentTask", new JsonPrimitive("taskerror"));
         } else if (userIntent.equals("intenthola")) {
             context.add("currentTask", new JsonPrimitive("taskhola"));
-        } else if (userIntent.equals("intentsaludo")) {
-            context.add("currentTask", new JsonPrimitive("tasksaludo"));
-        } else if (userIntent.equals("intentbye")) {
-            context.add("currentTask", new JsonPrimitive("taskbye"));
-        } else if (userIntent.equals("intentvisualizarCarro")) {
-            context.add("currentTask", new JsonPrimitive("taskvisualizarCarro"));
+        } else if (userIntent.equals("intentProducto")) {
+            context.add("currentTask", new JsonPrimitive("taskProducto"));
+        } else if (userIntent.equals("intenthi")) {
+            context.add("currentTask", new JsonPrimitive("taskhi"));
         }
     }
 
@@ -127,12 +124,10 @@ public class Chatbot1 {
             context.add("botIntent", new JsonPrimitive("boterror"));
         } else if (currentTask.equals("taskhola")) {
             context.add("botIntent", new JsonPrimitive("bothola"));
-        } else if (currentTask.equals("tasksaludo")) {
-            context.add("botIntent", new JsonPrimitive("botsaludo"));
-        } else if (currentTask.equals("taskbye")) {
-            context.add("botIntent", new JsonPrimitive("botbye"));
-        } else if (currentTask.equals("taskvisualizarCarro")) {
-            context.add("botIntent", new JsonPrimitive("botvisualizarCarro"));
+        } else if (currentTask.equals("taskProducto")) {
+            context.add("botIntent", new JsonPrimitive("botProducto"));
+        } else if (currentTask.equals("taskhi")) {
+            context.add("botIntent", new JsonPrimitive("bothi"));
         }
     }
 
@@ -145,105 +140,44 @@ public class Chatbot1 {
         String type = "";
 
         if (botIntent.equals("boterror")) {
-            botUtterance = "nmnmnm ";
+            botUtterance = "error! ";
             type = "error";
             JsonObject b = null;
             out.add("buttons", buttons);
         } else if (botIntent.equals("bothola")) {
-            botUtterance = "hola ";
-            type = "saludo";
+            botUtterance = "escoja producto ";
+            type = "Producto";
             JsonObject b = null;
-            b = new JsonObject();
-            b.add("titulo", new JsonPrimitive("continuar"));
-            b.add("respuesta", new JsonPrimitive("requestvisualizarCarro"));
-            buttons.add(b);
-            b = new JsonObject();
-            b.add("titulo", new JsonPrimitive("salir"));
-            b.add("respuesta", new JsonPrimitive("requesterror"));
-            buttons.add(b);
             out.add("buttons", buttons);
-        } else if (botIntent.equals("botsaludo")) {
-            type = "saludo";
-            botUtterance = "hola";
-            JsonObject b = null;
-            b = new JsonObject();
-            b.add("titulo", new JsonPrimitive("continuar"));
-            b.add("respuesta", new JsonPrimitive("requestvisualizarCarro"));
-            buttons.add(b);
-            b = new JsonObject();
-            b.add("titulo", new JsonPrimitive("salir"));
-            b.add("respuesta", new JsonPrimitive("requesterror"));
-            buttons.add(b);
-            out.add("buttons", buttons);
-        } else if (botIntent.equals("botbye")) {
-            type = "bye";
-            botUtterance = "adios";
-            JsonObject b = null;
-            b = new JsonObject();
-            b.add("titulo", new JsonPrimitive("regresar"));
-            b.add("respuesta", new JsonPrimitive("requestsaludo"));
-            buttons.add(b);
-            out.add("buttons", buttons);
-        } else if (botIntent.equals("botvisualizarCarro")) {
-            type = "visualizarCarro";
-            botUtterance = "escoja Carro";
+        } else if (botIntent.equals("botProducto")) {
+            type = "Producto";
+            botUtterance = "escoja producto";
             JsonObject b = null;
             JsonArray b1 = null;
             JsonArray elements = new JsonArray();
             JsonObject e = null;
-            e = new JsonObject();
-            e.add("titulo", new JsonPrimitive("selectcarro1"));
-            e.add("subtitulo", new JsonPrimitive("Carro1"));
-            e.add("url", new JsonPrimitive("https://static.iris.net.co/dinero/upload/images/2012/4/17/149034_232140_5.jpg"));
+            JsonObject obj = null;
+            JsonObject servicio = service.getProducto();
+            JsonArray elementosServicio = (JsonArray) servicio.get("product").getAsJsonArray();
 
-            b = new JsonObject();
-            b1 = new JsonArray();
-            b.add("titulo", new JsonPrimitive("Carro1"));
-            b.add("respuesta", new JsonPrimitive("requestbye"));
-            b1.add(b);
-            e.add("buttons", b1);
+            for (int i = 0; i < elementosServicio.size(); i++) {
+                e = new JsonObject();
+                obj = elementosServicio.get(i).getAsJsonObject();
+                e.add("titulo", new JsonPrimitive(obj.get("tipo").getAsString()));
+                b = new JsonObject();
+                b1 = new JsonArray();
+                b.add("titulo", new JsonPrimitive(obj.get("tipo").getAsString()));
+                b.add("respuesta", new JsonPrimitive("request" + obj.get("TextoServicio").getAsString()));
+                b1.add(b);
+                e.add("buttons", b1);
+            }
             elements.add(e);
-            e = new JsonObject();
-            e.add("titulo", new JsonPrimitive("selectcarro2"));
-            e.add("subtitulo", new JsonPrimitive("carro2"));
-            e.add("url", new JsonPrimitive("https://static.iris.net.co/dinero/upload/images/2012/4/17/149033_231847_5.jpg"));
-
-            b = new JsonObject();
-            b1 = new JsonArray();
-            b.add("titulo", new JsonPrimitive("carro2"));
-            b.add("respuesta", new JsonPrimitive("requestbye"));
-            b1.add(b);
-            e.add("buttons", b1);
-            elements.add(e);
-            e = new JsonObject();
-            e.add("titulo", new JsonPrimitive("selectcarro3"));
-            e.add("subtitulo", new JsonPrimitive("carro3"));
-            e.add("url", new JsonPrimitive("https://static.iris.net.co/dinero/upload/images/2012/4/17/149038_23340_5.jpg"));
-
-            b = new JsonObject();
-            b1 = new JsonArray();
-            b.add("titulo", new JsonPrimitive("carro3"));
-            b.add("respuesta", new JsonPrimitive("requestbye"));
-            b1.add(b);
-            e.add("buttons", b1);
-            elements.add(e);
-            e = new JsonObject();
-            e.add("titulo", new JsonPrimitive("selectcarro4"));
-            e.add("subtitulo", new JsonPrimitive("carro4"));
-            e.add("url", new JsonPrimitive("https://static.iris.net.co/dinero/upload/images/2012/4/17/149040_233825_5.jpg"));
-
-            b = new JsonObject();
-            b1 = new JsonArray();
-            b.add("titulo", new JsonPrimitive("carro4"));
-            b.add("respuesta", new JsonPrimitive("requestbye"));
-            b1.add(b);
-            e.add("buttons", b1);
-            elements.add(e);
-            b = new JsonObject();
-            b.add("titulo", new JsonPrimitive("enviar"));
-            b.add("respuesta", new JsonPrimitive("requestbye"));
-            buttons.add(b);
             out.add("elements", elements);
+            out.add("buttons", buttons);
+        } else if (botIntent.equals("bothi")) {
+            type = "hi";
+            botUtterance = "hola";
+            JsonObject b = null;
             out.add("buttons", buttons);
         }
         out.add("botIntent", context.get("botIntent"));
