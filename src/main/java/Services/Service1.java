@@ -26,6 +26,7 @@ public class Service1 {
 
     public JsonObject getProducto()
             throws ClientProtocolException, IOException {
+        System.out.println("llamandoo");
         String url = "https://servicemecatobot.herokuapp.com/myApp/rest/products";
 
         //step 2: Create a HTTP client
@@ -46,6 +47,7 @@ public class Service1 {
             String prettyJson = gson.toJson(json);
             System.out.println(prettyJson);
         }
+        System.out.println("j"+json.toString());
         return json;
     }
 
