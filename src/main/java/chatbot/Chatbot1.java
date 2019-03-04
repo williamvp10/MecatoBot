@@ -158,6 +158,7 @@ public class Chatbot1 {
             JsonObject e = null;
             JsonObject obj = null;
             JsonObject servicio = service.getProducto();
+            System.out.println("servicio"+servicio.toString());
             JsonArray elementosServicio = (JsonArray) servicio.get("product").getAsJsonArray();
 
             for (int i = 0; i < elementosServicio.size(); i++) {
@@ -170,8 +171,9 @@ public class Chatbot1 {
                 b.add("respuesta", new JsonPrimitive("request" + obj.get("TextoServicio").getAsString()));
                 b1.add(b);
                 e.add("buttons", b1);
+                elements.add(e);
             }
-            elements.add(e);
+            
             out.add("elements", elements);
             out.add("buttons", buttons);
         } else if (botIntent.equals("bothi")) {
