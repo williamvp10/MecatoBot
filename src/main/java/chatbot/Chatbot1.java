@@ -14,7 +14,9 @@ import com.google.gson.JsonParser;
 public class Chatbot1 {
 
     JsonObject context;
-    Service service;
+    Service1 service;
+    String varProducto;
+    String varIngredientes;
 
     public static void main(String[] args) throws IOException {
         Chatbot c = new Chatbot();
@@ -41,7 +43,8 @@ public class Chatbot1 {
     public Chatbot1() {
         context = new JsonObject();
         context.add("currentTask", new JsonPrimitive("none"));
-        service = new Service();
+        service = new Service1();
+        varProducto="";
     }
 
     public JsonObject process(JsonObject userInput) throws IOException {
@@ -93,7 +96,11 @@ public class Chatbot1 {
                 } else if (userType.trim().equals("requesthi")) {
                     userAction.add("userIntent", new JsonPrimitive("intenthi"));
                     context.add("hi", new JsonPrimitive(userUtterance));
-
+                    varIngredientes=userUtterance;
+                } else if (userType.trim().equals("requestIngredientes")) {
+                    userAction.add("userIntent", new JsonPrimitive("intentIngredientes"));
+                    context.add("Ingredientes", new JsonPrimitive(userUtterance));
+                    varProducto=userUtterance;
                 } else {
                     userAction.add("userIntent", new JsonPrimitive("intenterror"));
                 }
@@ -115,6 +122,8 @@ public class Chatbot1 {
             context.add("currentTask", new JsonPrimitive("taskProducto"));
         } else if (userIntent.equals("intenthi")) {
             context.add("currentTask", new JsonPrimitive("taskhi"));
+        } else if (userIntent.equals("intentIngredientes")) {
+            context.add("currentTask", new JsonPrimitive("taskIngredientes"));
         }
     }
 
@@ -128,6 +137,8 @@ public class Chatbot1 {
             context.add("botIntent", new JsonPrimitive("botProducto"));
         } else if (currentTask.equals("taskhi")) {
             context.add("botIntent", new JsonPrimitive("bothi"));
+        } else if (currentTask.equals("taskIngredientes")) {
+            context.add("botIntent", new JsonPrimitive("botIngredientes"));
         }
     }
 
@@ -157,8 +168,7 @@ public class Chatbot1 {
             JsonArray elements = new JsonArray();
             JsonObject e = null;
             JsonObject obj = null;
-            JsonObject servicio = service.getTipos();
-            System.out.println("servicio"+servicio.toString());
+            JsonObject servicio = service.getProducto();
             JsonArray elementosServicio = (JsonArray) servicio.get("product").getAsJsonArray();
 
             for (int i = 0; i < elementosServicio.size(); i++) {
@@ -173,13 +183,41 @@ public class Chatbot1 {
                 e.add("buttons", b1);
                 elements.add(e);
             }
-            
+            b = new JsonObject();
+            b1 = new JsonArray();
+            b.add("titulo", new JsonPrimitive(obj.get("Siguiente").getAsString()));
+            b.add("respuesta", new JsonPrimitive("requestIngredientes"));
+            b1.add(b);
+            e.add("buttons", b1);
             out.add("elements", elements);
             out.add("buttons", buttons);
         } else if (botIntent.equals("bothi")) {
             type = "hi";
             botUtterance = "hola";
             JsonObject b = null;
+            out.add("buttons", buttons);
+        } else if (botIntent.equals("botIngredientes")) {
+            type = "Ingredientes";
+            botUtterance = "seleccione Ingredientes";
+            JsonObject b = null;
+            JsonArray b1 = null;
+            JsonArray elements = new JsonArray();
+            JsonObject e = null;
+            JsonObject obj = null;
+            JsonObject servicio = service.getIngredientes(varProducto);
+            JsonArray elementosServicio = (JsonArray) servicio.get("product1").getAsJsonArray();
+
+            for (int i = 0; i < elementosServicio.size(); i++) {
+                e = new JsonObject();
+                obj = elementosServicio.get(i).getAsJsonObject();
+                e.add("titulo", new JsonPrimitive(obj.get("ingredientes").getAsString()));
+                elements.add(e);
+            }
+            b = new JsonObject();
+            b.add("titulo", new JsonPrimitive("enviar"));
+            b.add("respuesta", new JsonPrimitive("requesthi"));
+            buttons.add(b);
+            out.add("elements", elements);
             out.add("buttons", buttons);
         }
         out.add("botIntent", context.get("botIntent"));
