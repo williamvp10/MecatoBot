@@ -168,7 +168,7 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("tipo").getAsString()));
-                b.add("respuesta", new JsonPrimitive("request" + obj.get("TextoServicio").getAsString()));
+                b.add("respuesta", new JsonPrimitive("requesthi"));
                 b1.add(b);
                 e.add("buttons", b1);
                 elements.add(e);
