@@ -182,12 +182,6 @@ public class Chatbot1 {
                 e.add("buttons", b1);
                 elements.add(e);
             }
-            b = new JsonObject();
-            b1 = new JsonArray();
-            b.add("titulo", new JsonPrimitive(obj.get("Siguiente").getAsString()));
-            b.add("respuesta", new JsonPrimitive("requestIngredientes"));
-            b1.add(b);
-            buttons.add(b1);
             out.add("elements", elements);
             out.add("buttons", buttons);
         } else if (botIntent.equals("bothi")) {
