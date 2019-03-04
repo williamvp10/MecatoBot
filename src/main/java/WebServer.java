@@ -22,7 +22,7 @@ public class WebServer {
         Spark.setPort(getHerokuAssignedPort());
         Spark.staticFileLocation("/public");
 
-        final Chatbot1 bot = new Chatbot1();
+        final Chatbot bot = new Chatbot();
 
         get("/", (req, res) -> "Hello World! I am mecato bot!!");
 
