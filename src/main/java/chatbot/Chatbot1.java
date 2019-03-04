@@ -14,7 +14,7 @@ import com.google.gson.JsonParser;
 public class Chatbot1 {
 
     JsonObject context;
-    Service1 service;
+    Service service;
 
     public static void main(String[] args) throws IOException {
         Chatbot c = new Chatbot();
@@ -41,7 +41,7 @@ public class Chatbot1 {
     public Chatbot1() {
         context = new JsonObject();
         context.add("currentTask", new JsonPrimitive("none"));
-        service = new Service1();
+        service = new Service();
     }
 
     public JsonObject process(JsonObject userInput) throws IOException {
@@ -157,7 +157,7 @@ public class Chatbot1 {
             JsonArray elements = new JsonArray();
             JsonObject e = null;
             JsonObject obj = null;
-            JsonObject servicio = service.getProducto();
+            JsonObject servicio = service.getTipos();
             System.out.println("servicio"+servicio.toString());
             JsonArray elementosServicio = (JsonArray) servicio.get("product").getAsJsonArray();
 
