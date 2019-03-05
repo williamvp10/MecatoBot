@@ -1,5 +1,5 @@
-
 package chatbot;
+
 import Services.Service;
 import Services.Service1;
 import com.google.gson.Gson;
@@ -10,8 +10,6 @@ import java.util.Scanner;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonParser;
-
-
 
 public class Chatbot1 {
 
@@ -98,11 +96,11 @@ public class Chatbot1 {
                 if (userType.trim().equals("requestIngredientes")) {
                     userAction.add("userIntent", new JsonPrimitive("intentIngredientes"));
                     context.add("Ingredientes", new JsonPrimitive(userUtterance));
-                    this.varIngredientes = userUtterance;
+                     this.varIngredientes =this.varProducto+"/"+userUtterance;
                 } else if (userType.trim().equals("requestTiendas")) {
                     userAction.add("userIntent", new JsonPrimitive("intentTiendas"));
                     context.add("Tiendas", new JsonPrimitive(userUtterance));
-                    this.varTiendas = userUtterance;
+                    this.varIngredientes = userUtterance;
                 } else if (userType.trim().equals("requestfinalizar")) {
                     userAction.add("userIntent", new JsonPrimitive("intentfinalizar"));
                     context.add("finalizar", new JsonPrimitive(userUtterance));
