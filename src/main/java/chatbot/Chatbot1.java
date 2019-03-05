@@ -188,6 +188,7 @@ public class Chatbot1 {
                 b.add("titulo", new JsonPrimitive(obj.get("tipo").getAsString()));
                 b.add("respuesta", new JsonPrimitive("requestIngredientes"));
                 b1.add(b);
+                e.add("url", new JsonPrimitive("https://www.javirecetas.com/wp-content/uploads/2017/01/hamburguesa-angus-barbacoa-600x900.jpg"));
                 e.add("buttons", b1);
                 elements.add(e);
             }
@@ -212,6 +213,7 @@ public class Chatbot1 {
                 b.add("titulo", new JsonPrimitive(obj.get("ingredientes").getAsString()));
                 b.add("respuesta", new JsonPrimitive("add ingredientes"));
                 b1.add(b);
+                e.add("url", new JsonPrimitive("https://previews.123rf.com/images/peterhermesfurian/peterhermesfurian1611/peterhermesfurian161100063/66300148-rallado-queso-para-pizza-de-mozzarella-en-un-taz%C3%B3n-de-madera-sobre-blanco-cheddar-como-el-queso-italian.jpg"));
                 e.add("titulo", new JsonPrimitive(obj.get("ingredientes").getAsString()));
                 e.add("buttons", b1);
                 elements.add(e);
