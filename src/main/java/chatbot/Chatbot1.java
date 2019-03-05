@@ -244,6 +244,8 @@ public class Chatbot1 {
                 b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
                 b.add("respuesta", new JsonPrimitive("requestfinalizar"));
                 b1.add(b);
+                
+                e.add("url", new JsonPrimitive("https://elcorral.com/sites/default/files/logo-menu_0.png"));
                 e.add("buttons", b1);
                 elements.add(e);
             }
