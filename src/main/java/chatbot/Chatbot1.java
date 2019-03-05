@@ -100,7 +100,7 @@ public class Chatbot1 {
                 } else if (userType.trim().equals("requestTiendas")) {
                     userAction.add("userIntent", new JsonPrimitive("intentTiendas"));
                     context.add("Tiendas", new JsonPrimitive(userUtterance));
-                    this.varIngredientes = userUtterance;
+                    this.varIngredientes =this.varProducto+"/"+userUtterance;
                 } else if (userType.trim().equals("requestfinalizar")) {
                     userAction.add("userIntent", new JsonPrimitive("intentfinalizar"));
                     context.add("finalizar", new JsonPrimitive(userUtterance));
@@ -212,6 +212,7 @@ public class Chatbot1 {
                 b.add("titulo", new JsonPrimitive(obj.get("ingredientes").getAsString()));
                 b.add("respuesta", new JsonPrimitive("add ingredientes"));
                 b1.add(b);
+                e.add("titulo", new JsonPrimitive(obj.get("ingredientes").getAsString()));
                 e.add("buttons", b1);
                 elements.add(e);
             }
