@@ -1,6 +1,5 @@
 package chatbot;
 
-import Services.Service;
 import Services.Service1;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -96,7 +95,7 @@ public class Chatbot1 {
                 if (userType.trim().equals("requestIngredientes")) {
                     userAction.add("userIntent", new JsonPrimitive("intentIngredientes"));
                     context.add("Ingredientes", new JsonPrimitive(userUtterance));
-                        this.varProducto =userUtterance;
+                    this.varProducto = userUtterance;
                 } else if (userType.trim().equals("requestTiendas")) {
                     userAction.add("userIntent", new JsonPrimitive("intentTiendas"));
                     context.add("Tiendas", new JsonPrimitive(userUtterance));
