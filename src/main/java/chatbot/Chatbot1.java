@@ -93,23 +93,28 @@ public class Chatbot1 {
 
             if (userType != null) {
                 String[] entrada = userType.split(":");
+                if (entrada[0].trim().equals("requestProducto")) {
+                    userAction.add("userIntent", new JsonPrimitive("intentProducto"));
+                }
                 if (entrada[0].trim().equals("requestIngredientes")) {
                     userAction.add("userIntent", new JsonPrimitive("intentIngredientes"));
-                    context.add("Ingredientes", new JsonPrimitive(userUtterance));
                 } else if (entrada[0].trim().equals("requestTiendas")) {
                     userAction.add("userIntent", new JsonPrimitive("intentTiendas"));
-                    context.add("Tiendas", new JsonPrimitive(userUtterance));
                 } else if (entrada[0].trim().equals("requestfinalizar")) {
                     userAction.add("userIntent", new JsonPrimitive("intentfinalizar"));
-                    context.add("finalizar", new JsonPrimitive(userUtterance));
                 } else {
                     userAction.add("userIntent", new JsonPrimitive("intenterror"));
                 }
                 if (entrada[1].equals("Producto")) {
+                    context.add("Producto", new JsonPrimitive(userUtterance));
                     this.varProducto = userUtterance;
-                } else if (entrada[1].equals("Ingredientes")) {
+                }
+                if (entrada[1].equals("Ingredientes")) {
+                    context.add("Ingredientes", new JsonPrimitive(userUtterance));
                     this.varIngredientes = userUtterance;
-                } else if (entrada[1].equals("Tienda")) {
+                }
+                if (entrada[1].equals("Tiendas")) {
+                    context.add("Tiendas", new JsonPrimitive(userUtterance));
                     this.varTiendas = userUtterance;
                 }
             }
@@ -234,7 +239,7 @@ public class Chatbot1 {
             JsonArray elements = new JsonArray();
             JsonObject e = null;
             JsonObject obj = null;
-            JsonObject servicio = service.getTiendas(varProducto,varIngredientes);
+            JsonObject servicio = service.getTiendas(varProducto, varIngredientes);
             JsonArray elementosServicio = (JsonArray) servicio.get("tienda").getAsJsonArray();
 
             for (int i = 0; i < elementosServicio.size(); i++) {
