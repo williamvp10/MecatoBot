@@ -92,20 +92,25 @@ public class Chatbot1 {
             }
 
             if (userType != null) {
-                if (userType.trim().equals("requestIngredientes")) {
+                String[] entrada = userType.split(":");
+                if (entrada[0].trim().equals("requestIngredientes")) {
                     userAction.add("userIntent", new JsonPrimitive("intentIngredientes"));
                     context.add("Ingredientes", new JsonPrimitive(userUtterance));
-                    this.varProducto = userUtterance;
-                } else if (userType.trim().equals("requestTiendas")) {
+                } else if (entrada[0].trim().equals("requestTiendas")) {
                     userAction.add("userIntent", new JsonPrimitive("intentTiendas"));
                     context.add("Tiendas", new JsonPrimitive(userUtterance));
-                    this.varIngredientes = this.varProducto+"/"+userUtterance;
-                } else if (userType.trim().equals("requestfinalizar")) {
+                } else if (entrada[0].trim().equals("requestfinalizar")) {
                     userAction.add("userIntent", new JsonPrimitive("intentfinalizar"));
                     context.add("finalizar", new JsonPrimitive(userUtterance));
-
                 } else {
                     userAction.add("userIntent", new JsonPrimitive("intenterror"));
+                }
+                if (entrada[1].equals("producto")) {
+                    this.varProducto = userUtterance;
+                } else if (entrada[1].equals("Ingredientes")) {
+                    this.varIngredientes = userUtterance;
+                } else if (entrada[1].equals("Tienda")) {
+                    this.varTiendas = userUtterance;
                 }
             }
         }
@@ -185,7 +190,7 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("tipo").getAsString()));
-                b.add("respuesta", new JsonPrimitive("requestIngredientes"));
+                b.add("respuesta", new JsonPrimitive("requestIngredientes:Producto"));
                 b1.add(b);
                 e.add("buttons", b1);
                 elements.add(e);
@@ -217,7 +222,7 @@ public class Chatbot1 {
             }
             b = new JsonObject();
             b.add("titulo", new JsonPrimitive("enviar"));
-            b.add("respuesta", new JsonPrimitive("requestTiendas"));
+            b.add("respuesta", new JsonPrimitive("requestTiendas:Ingredientes"));
             buttons.add(b);
             out.add("elements", elements);
             out.add("buttons", buttons);
@@ -229,7 +234,7 @@ public class Chatbot1 {
             JsonArray elements = new JsonArray();
             JsonObject e = null;
             JsonObject obj = null;
-            JsonObject servicio = service.getTiendas(varIngredientes);
+            JsonObject servicio = service.getTiendas(varProducto,varIngredientes);
             JsonArray elementosServicio = (JsonArray) servicio.get("tienda").getAsJsonArray();
 
             for (int i = 0; i < elementosServicio.size(); i++) {
@@ -239,7 +244,7 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
-                b.add("respuesta", new JsonPrimitive("requestfinalizar"));
+                b.add("respuesta", new JsonPrimitive("requestfinalizar:Tiendas"));
                 b1.add(b);
                 e.add("buttons", b1);
                 elements.add(e);

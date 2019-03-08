@@ -13,6 +13,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 
 public class Service {
 
@@ -56,7 +59,6 @@ public class Service {
         //step 3: Create a HTTPGet object and execute the url
         HttpGet httpGet = new HttpGet(url);
         HttpResponse response = httpclient.execute(httpGet);
-
         //step 4: Process the result
         JsonObject json = null;
         int statusCode = response.getStatusLine().getStatusCode();
