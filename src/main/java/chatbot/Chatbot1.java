@@ -105,7 +105,7 @@ public class Chatbot1 {
                 } else {
                     userAction.add("userIntent", new JsonPrimitive("intenterror"));
                 }
-                if (entrada[1].equals("producto")) {
+                if (entrada[1].equals("Producto")) {
                     this.varProducto = userUtterance;
                 } else if (entrada[1].equals("Ingredientes")) {
                     this.varIngredientes = userUtterance;
