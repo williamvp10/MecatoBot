@@ -97,8 +97,7 @@ public class Chatbot1 {
                 String[] entrada = userType.split(":");
                 if (entrada[0].trim().equals("requestProducto")) {
                     userAction.add("userIntent", new JsonPrimitive("intentProducto"));
-                }
-                if (entrada[0].trim().equals("requestIngredientes")) {
+                } else if (entrada[0].trim().equals("requestIngredientes")) {
                     userAction.add("userIntent", new JsonPrimitive("intentIngredientes"));
                 } else if (entrada[0].trim().equals("requestTiendas")) {
                     userAction.add("userIntent", new JsonPrimitive("intentTiendas"));
@@ -272,13 +271,19 @@ public class Chatbot1 {
             JsonObject OInformeProducto = new JsonObject();
             OInformeProducto.add("text", new JsonPrimitive("" + "el producto es: " + varProducto));
             out.add("InformeProducto", OInformeProducto);
+            JsonObject OInformeIngredientes = new JsonObject();
+            OInformeIngredientes.add("text", new JsonPrimitive("" + "ingredientes: " + varIngredientes));
+            out.add("InformeIngredientes", OInformeIngredientes);
+            JsonObject OInformeTienda = new JsonObject();
+            OInformeTienda.add("text", new JsonPrimitive("" + "Tienda: " + varTiendas));
+            out.add("InformeTienda", OInformeTienda);
             b = new JsonObject();
             b.add("titulo", new JsonPrimitive("Si"));
-            b.add("respuesta", new JsonPrimitive("requestfinalizar:Resultados"));
+            b.add("respuesta", new JsonPrimitive("requestfinalizar"));
             buttons.add(b);
             b = new JsonObject();
             b.add("titulo", new JsonPrimitive("No"));
-            b.add("respuesta", new JsonPrimitive("requestProducto:Resultados"));
+            b.add("respuesta", new JsonPrimitive("requestProducto"));
             buttons.add(b);
         }
         out.add("buttons", buttons);
@@ -288,5 +293,6 @@ public class Chatbot1 {
         System.out.println("context: " + context.toString());
         System.out.println("salida: " + out.toString());
         return out;
+
     }
 }
