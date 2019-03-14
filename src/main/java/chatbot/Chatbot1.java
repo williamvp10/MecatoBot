@@ -108,17 +108,19 @@ public class Chatbot1 {
                 } else {
                     userAction.add("userIntent", new JsonPrimitive("intenterror"));
                 }
-                if (entrada[1].equals("Producto")) {
-                    context.add("Producto", new JsonPrimitive(userUtterance));
-                    this.varProducto = userUtterance;
-                }
-                if (entrada[1].equals("Ingredientes")) {
-                    context.add("Ingredientes", new JsonPrimitive(userUtterance));
-                    this.varIngredientes = userUtterance;
-                }
-                if (entrada[1].equals("Tiendas")) {
-                    context.add("Tiendas", new JsonPrimitive(userUtterance));
-                    this.varTiendas = userUtterance;
+                if (entrada.length > 1) {
+                    if (entrada[1].equals("Producto")) {
+                        context.add("Producto", new JsonPrimitive(userUtterance));
+                        this.varProducto = userUtterance;
+                    }
+                    if (entrada[1].equals("Ingredientes")) {
+                        context.add("Ingredientes", new JsonPrimitive(userUtterance));
+                        this.varIngredientes = userUtterance;
+                    }
+                    if (entrada[1].equals("Tiendas")) {
+                        context.add("Tiendas", new JsonPrimitive(userUtterance));
+                        this.varTiendas = userUtterance;
+                    }
                 }
             }
         }
