@@ -209,7 +209,6 @@ public class Chatbot1 {
                 elements.add(e);
             }
             out.add("elements", elements);
-            out.add("buttons", buttons);
         } else if (botIntent.equals("botIngredientes")) {
             type = "Ingredientes";
             botUtterance = "seleccione Ingredientes";
@@ -238,7 +237,6 @@ public class Chatbot1 {
             b.add("respuesta", new JsonPrimitive("requestTiendas:Ingredientes"));
             buttons.add(b);
             out.add("elements", elements);
-            out.add("buttons", buttons);
         } else if (botIntent.equals("botTiendas")) {
             type = "Tiendas";
             botUtterance = "estas son las tiendas que ofrecen el producto que deseas";
@@ -263,18 +261,27 @@ public class Chatbot1 {
                 elements.add(e);
             }
             out.add("elements", elements);
-            out.add("buttons", buttons);
         } else if (botIntent.equals("botfinalizar")) {
             type = "finalizar";
             botUtterance = "tu pedido a sido procesado";
             JsonObject b = null;
-            out.add("buttons", buttons);
         } else if (botIntent.equals("botResultados")) {
             type = "Resultados";
             botUtterance = "desea confirmar pedido?";
-            out.add("Producto", new JsonPrimitive(varProducto));
-            out.add("buttons", buttons);
+            JsonObject b = null;
+            JsonObject OInformeProducto = new JsonObject();
+            OInformeProducto.add("text", new JsonPrimitive("" + "el producto es: " + varProducto));
+            out.add("InformeProducto", OInformeProducto);
+            b = new JsonObject();
+            b.add("titulo", new JsonPrimitive("Si"));
+            b.add("respuesta", new JsonPrimitive("requestfinalizar:Resultados"));
+            buttons.add(b);
+            b = new JsonObject();
+            b.add("titulo", new JsonPrimitive("No"));
+            b.add("respuesta", new JsonPrimitive("requestProducto:Resultados"));
+            buttons.add(b);
         }
+        out.add("buttons", buttons);
         out.add("botIntent", context.get("botIntent"));
         out.add("botUtterance", new JsonPrimitive(botUtterance));
         out.add("type", new JsonPrimitive(type));
