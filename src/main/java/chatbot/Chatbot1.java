@@ -9,18 +9,19 @@ import java.util.Scanner;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonParser;
+import java.util.HashMap;
 
 public class Chatbot1 {
 
     JsonObject context;
     Service1 service;
-
+    HashMap<String, String> preguntas;
     String varProducto;
     String varIngredientes;
     String varTiendas;
 
     public static void main(String[] args) throws IOException {
-        Chatbot c = new Chatbot();
+        Chatbot1 c = new Chatbot1();
         Scanner scanner = new Scanner(System.in);
         String userUtterance;
 
@@ -42,6 +43,7 @@ public class Chatbot1 {
     }
 
     public Chatbot1() {
+        preguntas = new HashMap<String, String>();
         context = new JsonObject();
         context.add("currentTask", new JsonPrimitive("none"));
         service = new Service1();
@@ -102,6 +104,8 @@ public class Chatbot1 {
                     userAction.add("userIntent", new JsonPrimitive("intentTiendas"));
                 } else if (entrada[0].trim().equals("requestfinalizar")) {
                     userAction.add("userIntent", new JsonPrimitive("intentfinalizar"));
+                } else if (entrada[0].trim().equals("requestResultados")) {
+                    userAction.add("userIntent", new JsonPrimitive("intentResultados"));
                 } else {
                     userAction.add("userIntent", new JsonPrimitive("intenterror"));
                 }
@@ -129,6 +133,8 @@ public class Chatbot1 {
 
         if (userIntent.equals("intenterror")) {
             context.add("currentTask", new JsonPrimitive("taskerror"));
+        } else if (userIntent.equals("intentResultados")) {
+            context.add("currentTask", new JsonPrimitive("taskResultados"));
         } else if (userIntent.equals("intenthola")) {
             context.add("currentTask", new JsonPrimitive("taskProducto"));
         } else if (userIntent.equals("intentProducto")) {
@@ -146,6 +152,8 @@ public class Chatbot1 {
         String currentTask = context.get("currentTask").getAsString();
         if (currentTask.equals("taskerror")) {
             context.add("botIntent", new JsonPrimitive("boterror"));
+        } else if (currentTask.equals("taskResultados")) {
+            context.add("botIntent", new JsonPrimitive("botResultados"));
         } else if (currentTask.equals("taskhola")) {
             context.add("botIntent", new JsonPrimitive("bothola"));
         } else if (currentTask.equals("taskProducto")) {
@@ -249,7 +257,7 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
-                b.add("respuesta", new JsonPrimitive("requestfinalizar:Tiendas"));
+                b.add("respuesta", new JsonPrimitive("requestResultados:Tiendas"));
                 b1.add(b);
                 e.add("buttons", b1);
                 elements.add(e);
@@ -260,6 +268,11 @@ public class Chatbot1 {
             type = "finalizar";
             botUtterance = "tu pedido a sido procesado";
             JsonObject b = null;
+            out.add("buttons", buttons);
+        } else if (botIntent.equals("botResultados")) {
+            type = "Resultados";
+            botUtterance = "desea confirmar pedido?";
+            out.add("Producto", new JsonPrimitive(varProducto));
             out.add("buttons", buttons);
         }
         out.add("botIntent", context.get("botIntent"));
