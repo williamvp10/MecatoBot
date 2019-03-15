@@ -207,7 +207,8 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("tipo").getAsString()));
-                b.add("respuesta", new JsonPrimitive("requestIngredientes:Producto:"+obj.getAsString()));
+                b.add("respuesta", new JsonPrimitive("requestIngredientes:Producto"));
+                b.add("Objeto", obj);
                 b1.add(b);
                 e.add("buttons", b1);
                 elements.add(e);
@@ -231,7 +232,8 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("ingredientes").getAsString()));
-                b.add("respuesta", new JsonPrimitive("add Ingredientes:"+obj.getAsString()));
+                b.add("respuesta", new JsonPrimitive("add Ingredientes"));
+                b.add("Objeto", obj);
                 b1.add(b);
                 e.add("buttons", b1);
                 elements.add(e);
@@ -259,7 +261,8 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
-                b.add("respuesta", new JsonPrimitive("requestResultados:Tiendas:"+obj.getAsString()));
+                b.add("respuesta", new JsonPrimitive("requestResultados:Tiendas"));
+                b.add("Objeto", obj);
                 b1.add(b);
                 e.add("buttons", b1);
                 elements.add(e);
