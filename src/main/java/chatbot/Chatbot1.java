@@ -20,6 +20,7 @@ public class Chatbot1 {
     Producto cProducto;
     ArrayList<Ingredientes> cIngredientes;
     Tiendas cTiendas;
+
     public static void main(String[] args) throws IOException {
         Chatbot1 c = new Chatbot1();
         Scanner scanner = new Scanner(System.in);
@@ -121,23 +122,21 @@ public class Chatbot1 {
                     }
                     if (entrada[1].equals("Ingredientes")) {
                         context.add("Ingredientes", new JsonPrimitive(userUtterance));
-                        if (entrada.length > 2) {
-                            this.cIngredientes.clear();
-                            String[] data = entrada[2].split(",");
-                            for (int i = 0; i < data.length; i++) {
-                                String[] data1 = data[i].split("--");
-                                Ingredientes ing = new Ingredientes();
-                                ing.setIngredientes(data1[0].split("-")[1]);
-                                ing.setPrecio(data1[1].split("-")[1]);
-                                this.cIngredientes.add(ing);
-                            }
-
+                        this.cIngredientes.clear();
+                        String[] data = userUtterance.split(",");
+                        for (int i = 0; i < data.length; i++) {
+                            String[] data1 = data[i].split("--");
+                            Ingredientes ing = new Ingredientes();
+                            ing.setIngredientes(data1[0].split("-")[1]);
+                            ing.setPrecio(data1[1].split("-")[1]);
+                            this.cIngredientes.add(ing);
                         }
+
                     }
                     if (entrada[1].equals("Tiendas")) {
                         context.add("Tiendas", new JsonPrimitive(userUtterance));
                         if (entrada.length > 2) {
-                            this.cTiendas=new Tiendas();
+                            this.cTiendas = new Tiendas();
                             String[] data = entrada[2].split("--");
                             this.cTiendas.setId(data[0].split("-")[1]);
                             this.cTiendas.setNombre(data[1].split("-")[1]);
@@ -331,15 +330,15 @@ public class Chatbot1 {
         return out;
 
     }
-    
-    public String getIngredientes(){
-       String res="";
+
+    public String getIngredientes() {
+        String res = "";
         for (int i = 0; i < this.cIngredientes.size(); i++) {
-            if(i!=0){
-                res+=",";
+            if (i != 0) {
+                res += ",";
             }
-            res+=this.cIngredientes.get(i).getIngredientes();
+            res += this.cIngredientes.get(i).getIngredientes();
         }
-       return res;
+        return res;
     }
 }
