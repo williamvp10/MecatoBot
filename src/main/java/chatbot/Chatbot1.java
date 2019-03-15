@@ -121,7 +121,7 @@ public class Chatbot1 {
                         this.varProducto = userUtterance;
                         if (entrada.length > 2) {
                             this.cProducto = new Producto();
-                            String[] data = entrada[2].split("..");
+                            String[] data = entrada[2].split("--");
                             this.cProducto.setTipo(data[0].split("-")[1]);
                             this.cProducto.setPrecio(data[1].split("-")[1]);
                             System.out.println("tipo:" + this.cProducto.getTipo());
@@ -134,7 +134,7 @@ public class Chatbot1 {
                             this.cIngredientes.clear();
                             String[] data = entrada[2].split(",");
                             for (int i = 0; i < data.length; i++) {
-                                String[] data1 = data[i].split("..");
+                                String[] data1 = data[i].split("--");
                                 Ingredientes ing = new Ingredientes();
                                 ing.setIngredientes(data1[0].split("-")[1]);
                                 ing.setPrecio(data1[1].split("-")[1]);
@@ -148,7 +148,7 @@ public class Chatbot1 {
                         this.varTiendas = userUtterance;
                         if (entrada.length > 2) {
                             this.cTiendas=new Tiendas();
-                            String[] data = entrada[2].split("..");
+                            String[] data = entrada[2].split("--");
                             this.cTiendas.setId(data[0].split("-")[1]);
                             this.cTiendas.setNombre(data[1].split("-")[1]);
                             this.cTiendas.setDireccion(data[2].split("-")[1]);
@@ -243,7 +243,7 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("tipo").getAsString()));
-                String var = "" + "tipo-" + obj.get("tipo").getAsString() + ".." + "precio-" + obj.get("precio").getAsString();
+                String var = "" + "tipo-" + obj.get("tipo").getAsString() + "--" + "precio-" + obj.get("precio").getAsString();
                 b.add("respuesta", new JsonPrimitive("requestIngredientes:Producto:" + var));
                 b1.add(b);
                 e.add("buttons", b1);
@@ -268,7 +268,7 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("ingredientes").getAsString()));
-                String var = "" + "ingredientes-" + obj.get("ingredientes").getAsString() + ".." + "precio-" + obj.get("precio").getAsString();
+                String var = "" + "ingredientes-" + obj.get("ingredientes").getAsString() + "--" + "precio-" + obj.get("precio").getAsString();
                 b.add("respuesta", new JsonPrimitive("add Ingredientes:" + var));
                 b1.add(b);
                 e.add("buttons", b1);
@@ -297,9 +297,9 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
-                String var = "" + "id-" + obj.get("id").getAsString() + ".." + "nombre-" + obj.get("nombre").getAsString();
-                var += ".." + "direccion-" + obj.get("direccion").getAsString() + ".." + "url-" + obj.get("url").getAsString();
-                var += ".." + "telefono-" + obj.get("telefono").getAsString();
+                String var = "" + "id-" + obj.get("id").getAsString() + "--" + "nombre-" + obj.get("nombre").getAsString();
+                var += "--" + "direccion-" + obj.get("direccion").getAsString() + "--" + "url-" + obj.get("url").getAsString();
+                var += "--" + "telefono-" + obj.get("telefono").getAsString();
                 b.add("respuesta", new JsonPrimitive("requestResultados:Tiendas:" + var));
                 b1.add(b);
                 e.add("buttons", b1);
