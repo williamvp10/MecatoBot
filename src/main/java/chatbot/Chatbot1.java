@@ -335,7 +335,10 @@ public class Chatbot1 {
     public String getIngredientes(){
        String res="";
         for (int i = 0; i < this.cIngredientes.size(); i++) {
-            res+=","+this.cIngredientes.get(i).getIngredientes();
+            if(i!=0){
+                res+=",";
+            }
+            res+=this.cIngredientes.get(i).getIngredientes();
         }
        return res;
     }
