@@ -235,8 +235,6 @@ public class Chatbot1 {
                 b.add("titulo", new JsonPrimitive(obj.get("ingredientes").getAsString()));
                 String var = "" + "ingredientes-" + obj.get("ingredientes").getAsString() + ";" + "precio-" + obj.get("precio").getAsString();
                 b.add("respuesta", new JsonPrimitive("add Ingredientes:" + var));
-
-                b.add("Objeto", new JsonPrimitive(obj.toString()));
                 b1.add(b);
                 e.add("buttons", b1);
                 elements.add(e);
