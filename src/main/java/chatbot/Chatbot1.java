@@ -51,6 +51,9 @@ public class Chatbot1 {
         context = new JsonObject();
         context.add("currentTask", new JsonPrimitive("none"));
         service = new Service1();
+        this.cProducto = new Producto();
+        this.cTiendas = new Tiendas();
+        this.cIngredientes = new ArrayList<>();
         varProducto = "";
         varIngredientes = "";
         varTiendas = "";
@@ -117,38 +120,41 @@ public class Chatbot1 {
                         context.add("Producto", new JsonPrimitive(userUtterance));
                         this.varProducto = userUtterance;
                         if (entrada.length > 2) {
-                            String[] data=entrada[2].split(";");
+                            this.cProducto = new Producto();
+                            String[] data = entrada[2].split(";");
                             this.cProducto.setTipo(data[0].split("-")[1]);
                             this.cProducto.setPrecio(data[1].split("-")[1]);
-                            System.out.println("tipo:"+this.cProducto.getTipo());
+                            System.out.println("tipo:" + this.cProducto.getTipo());
                         }
                     }
                     if (entrada[1].equals("Ingredientes")) {
                         context.add("Ingredientes", new JsonPrimitive(userUtterance));
                         this.varIngredientes = userUtterance;
-                         if (entrada.length > 2) {
-                            String[] data=entrada[2].split(",");
-                             for (int i = 0; i < data.length; i++) {
-                                 String[] data1=data[i].split(";");
-                                 Ingredientes ing=new Ingredientes();
-                                 ing.setIngredientes(data1[0].split("-")[1]);
-                                 ing.setPrecio(data1[1].split("-")[1]);
-                                 this.cIngredientes.add(ing);
-                             }
-                            
+                        if (entrada.length > 2) {
+                            this.cIngredientes.clear();
+                            String[] data = entrada[2].split(",");
+                            for (int i = 0; i < data.length; i++) {
+                                String[] data1 = data[i].split(";");
+                                Ingredientes ing = new Ingredientes();
+                                ing.setIngredientes(data1[0].split("-")[1]);
+                                ing.setPrecio(data1[1].split("-")[1]);
+                                this.cIngredientes.add(ing);
+                            }
+
                         }
                     }
                     if (entrada[1].equals("Tiendas")) {
                         context.add("Tiendas", new JsonPrimitive(userUtterance));
                         this.varTiendas = userUtterance;
-                         if (entrada.length > 2) {
-                            String[] data=entrada[2].split(";");
+                        if (entrada.length > 2) {
+                            this.cTiendas=new Tiendas();
+                            String[] data = entrada[2].split(";");
                             this.cTiendas.setId(data[0].split("-")[1]);
                             this.cTiendas.setNombre(data[1].split("-")[1]);
                             this.cTiendas.setDireccion(data[2].split("-")[1]);
                             this.cTiendas.setUrl(data[3].split("-")[1]);
                             this.cTiendas.setTelefono(data[4].split("-")[1]);
-                            System.out.println("nombre:"+this.cTiendas.getNombre());
+                            System.out.println("nombre:" + this.cTiendas.getNombre());
                         }
                     }
                 }
