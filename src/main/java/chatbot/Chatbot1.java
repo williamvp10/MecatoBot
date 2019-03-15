@@ -298,7 +298,7 @@ public class Chatbot1 {
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
                 String var = "" + "id-" + obj.get("id").getAsString() + "--" + "nombre-" + obj.get("nombre").getAsString();
-                var += "--" + "direccion-" + obj.get("direccion").getAsString() + "--" + "url-" + obj.get("url").getAsString();
+                var += "--" + "direccion-" + obj.get("direccion").getAsString() + "--" + "url-" + " ";
                 var += "--" + "telefono-" + obj.get("telefono").getAsString();
                 b.add("respuesta", new JsonPrimitive("requestResultados:Tiendas:" + var));
                 b1.add(b);
