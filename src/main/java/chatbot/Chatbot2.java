@@ -278,7 +278,7 @@ public class Chatbot2 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
-                String var = "" + "id-" + obj.get("id").getAsString() + "--" + "nombre-" + obj.get("nombre").getAsString() + "--" + "direccion-" + obj.get("direccion").getAsString() + "--" + "url-" + obj.get("url").getAsString() + "--" + "telefono-" + obj.get("telefono").getAsString();
+                String var = "" + "id-" + obj.get("id").getAsString() + "--" + "nombre-" + obj.get("nombre").getAsString() + "--" + "direccion-" + obj.get("direccion").getAsString() + "--" + "url-" + " " + "--" + "telefono-" + obj.get("telefono").getAsString();
                 b.add("respuesta", new JsonPrimitive("requestResultados:Tiendas:" + var));
                 b1.add(b);
                 e.add("buttons", b1);
