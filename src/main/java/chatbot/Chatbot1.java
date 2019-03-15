@@ -116,6 +116,7 @@ public class Chatbot1 {
                     if (entrada[1].equals("Ingredientes")) {
                         context.add("Ingredientes", new JsonPrimitive(userUtterance));
                         this.varIngredientes = userUtterance;
+                        System.out.println("dataaa " + userUtterance);
                     }
                     if (entrada[1].equals("Tiendas")) {
                         context.add("Tiendas", new JsonPrimitive(userUtterance));
@@ -207,8 +208,8 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("tipo").getAsString()));
-                b.add("respuesta", new JsonPrimitive("requestIngredientes:Producto"));
-                b.add("Objeto", new JsonPrimitive(obj.toString()));
+                String var = "" + "tipo-" + obj.get("tipo").getAsString() + ";" + "precio-" + obj.get("precio").getAsString();
+                b.add("respuesta", new JsonPrimitive("requestIngredientes:Producto:" + var));
                 b1.add(b);
                 e.add("buttons", b1);
                 elements.add(e);
@@ -232,8 +233,9 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("ingredientes").getAsString()));
-                b.add("respuesta", new JsonPrimitive("add Ingredientes"));
-                //String objeto="";
+                String var = "" + "ingredientes-" + obj.get("ingredientes").getAsString() + ";" + "precio-" + obj.get("precio").getAsString();
+                b.add("respuesta", new JsonPrimitive("add Ingredientes:" + var));
+
                 b.add("Objeto", new JsonPrimitive(obj.toString()));
                 b1.add(b);
                 e.add("buttons", b1);
@@ -262,8 +264,10 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
-                b.add("respuesta", new JsonPrimitive("requestResultados:Tiendas"));
-                b.add("Objeto", new JsonPrimitive(obj.toString()));
+                String var = "" + "id-" + obj.get("id").getAsString() + ";" + "nombre-" + obj.get("nombre").getAsString();
+                var += ";" + "direccion-" + obj.get("direccion").getAsString() + ";" + "url-" + obj.get("url").getAsString();
+                var += ";" + "telefono-" + obj.get("telefono").getAsString();
+                b.add("respuesta", new JsonPrimitive("requestResultados:Tiendas:" + var));
                 b1.add(b);
                 e.add("buttons", b1);
                 elements.add(e);
