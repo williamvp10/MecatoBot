@@ -122,6 +122,9 @@ public class Chatbot1 {
                         this.varTiendas = userUtterance;
                     }
                 }
+                if(entrada.length>2){
+                    System.out.println("dataaa "+entrada[2]);
+                }
             }
         }
         return userAction;
@@ -204,7 +207,7 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("tipo").getAsString()));
-                b.add("respuesta", new JsonPrimitive("requestIngredientes:Producto"));
+                b.add("respuesta", new JsonPrimitive("requestIngredientes:Producto:"+obj));
                 b1.add(b);
                 e.add("buttons", b1);
                 elements.add(e);
@@ -228,7 +231,7 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("ingredientes").getAsString()));
-                b.add("respuesta", new JsonPrimitive("add Ingredientes"));
+                b.add("respuesta", new JsonPrimitive("add Ingredientes:"+obj));
                 b1.add(b);
                 e.add("buttons", b1);
                 elements.add(e);
@@ -256,7 +259,7 @@ public class Chatbot1 {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
-                b.add("respuesta", new JsonPrimitive("requestResultados:Tiendas"));
+                b.add("respuesta", new JsonPrimitive("requestResultados:Tiendas:"+obj));
                 b1.add(b);
                 e.add("buttons", b1);
                 elements.add(e);
