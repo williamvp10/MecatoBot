@@ -72,7 +72,7 @@ public class Service1 {
     public JsonObject getTiendas(String producto,String Ingredientes)
             throws ClientProtocolException, IOException {
         String url = "https://servicemecatobot.herokuapp.com/myApp/rest/tiendas"+ "/" + producto.trim() + "/" + Ingredientes.trim();
-
+        System.out.println(url);
         //step 2: Create a HTTP client
         HttpClient httpclient = HttpClientBuilder.create().build();
 
