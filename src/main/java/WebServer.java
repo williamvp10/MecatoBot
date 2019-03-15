@@ -5,8 +5,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
-import chatbot.Chatbot;
-import chatbot.Chatbot1;
+import chatbot.*;
 import web.utils.ResponseError;
 import static web.utils.JSONUtil.*;
 
@@ -22,7 +21,7 @@ public class WebServer {
         Spark.setPort(getHerokuAssignedPort());
         Spark.staticFileLocation("/public");
 
-        final Chatbot1 bot = new Chatbot1();
+        final Chatbot2 bot = new Chatbot2();
 
         get("/", (req, res) -> "Hello World! I am mecato bot!!");
 
