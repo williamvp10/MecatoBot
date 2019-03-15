@@ -9,6 +9,7 @@ import java.util.Scanner;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonParser;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Chatbot1 {
@@ -19,6 +20,9 @@ public class Chatbot1 {
     String varProducto;
     String varIngredientes;
     String varTiendas;
+    Producto cProducto;
+    ArrayList<Ingredientes> cIngredientes;
+    Tiendas cTiendas;
 
     public static void main(String[] args) throws IOException {
         Chatbot1 c = new Chatbot1();
@@ -112,15 +116,40 @@ public class Chatbot1 {
                     if (entrada[1].equals("Producto")) {
                         context.add("Producto", new JsonPrimitive(userUtterance));
                         this.varProducto = userUtterance;
+                        if (entrada.length > 2) {
+                            String[] data=entrada[2].split(";");
+                            this.cProducto.setTipo(data[0].split("-")[1]);
+                            this.cProducto.setPrecio(data[1].split("-")[1]);
+                            System.out.println("tipo:"+this.cProducto.getTipo());
+                        }
                     }
                     if (entrada[1].equals("Ingredientes")) {
                         context.add("Ingredientes", new JsonPrimitive(userUtterance));
                         this.varIngredientes = userUtterance;
-                        System.out.println("dataaa " + userUtterance);
+                         if (entrada.length > 2) {
+                            String[] data=entrada[2].split(",");
+                             for (int i = 0; i < data.length; i++) {
+                                 String[] data1=data[i].split(";");
+                                 Ingredientes ing=new Ingredientes();
+                                 ing.setIngredientes(data1[0].split("-")[1]);
+                                 ing.setPrecio(data1[1].split("-")[1]);
+                                 this.cIngredientes.add(ing);
+                             }
+                            
+                        }
                     }
                     if (entrada[1].equals("Tiendas")) {
                         context.add("Tiendas", new JsonPrimitive(userUtterance));
                         this.varTiendas = userUtterance;
+                         if (entrada.length > 2) {
+                            String[] data=entrada[2].split(";");
+                            this.cTiendas.setId(data[0].split("-")[1]);
+                            this.cTiendas.setNombre(data[1].split("-")[1]);
+                            this.cTiendas.setDireccion(data[2].split("-")[1]);
+                            this.cTiendas.setUrl(data[3].split("-")[1]);
+                            this.cTiendas.setTelefono(data[4].split("-")[1]);
+                            System.out.println("nombre:"+this.cTiendas.getNombre());
+                        }
                     }
                 }
                 if (entrada.length > 2) {
@@ -280,13 +309,13 @@ public class Chatbot1 {
             botUtterance = "desea confirmar pedido?";
             JsonObject b = null;
             JsonObject OInformeProducto = new JsonObject();
-            OInformeProducto.add("text", new JsonPrimitive("" + "el producto es: " + varProducto));
+            OInformeProducto.add("text", new JsonPrimitive("" + "el producto es: " + this.cProducto.getTipo()));
             out.add("InformeProducto", OInformeProducto);
             JsonObject OInformeIngredientes = new JsonObject();
-            OInformeIngredientes.add("text", new JsonPrimitive("" + "ingredientes: " + varIngredientes));
+            OInformeIngredientes.add("text", new JsonPrimitive("" + "ingredientes: " + this.cIngredientes.toString()));
             out.add("InformeIngredientes", OInformeIngredientes);
             JsonObject OInformeTienda = new JsonObject();
-            OInformeTienda.add("text", new JsonPrimitive("" + "Tienda: " + varTiendas));
+            OInformeTienda.add("text", new JsonPrimitive("" + "Tienda: " + this.cTiendas.getNombre()));
             out.add("InformeTienda", OInformeTienda);
             b = new JsonObject();
             b.add("titulo", new JsonPrimitive("Si"));
