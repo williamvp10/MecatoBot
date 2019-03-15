@@ -17,13 +17,9 @@ public class Chatbot1 {
     JsonObject context;
     Service1 service;
     HashMap<String, String> preguntas;
-    String varProducto;
-    String varIngredientes;
-    String varTiendas;
     Producto cProducto;
     ArrayList<Ingredientes> cIngredientes;
     Tiendas cTiendas;
-
     public static void main(String[] args) throws IOException {
         Chatbot1 c = new Chatbot1();
         Scanner scanner = new Scanner(System.in);
@@ -54,9 +50,6 @@ public class Chatbot1 {
         this.cProducto = new Producto();
         this.cTiendas = new Tiendas();
         this.cIngredientes = new ArrayList<>();
-        varProducto = "";
-        varIngredientes = "";
-        varTiendas = "";
     }
 
     public JsonObject process(JsonObject userInput) throws IOException {
@@ -118,7 +111,6 @@ public class Chatbot1 {
                 if (entrada.length > 1) {
                     if (entrada[1].equals("Producto")) {
                         context.add("Producto", new JsonPrimitive(userUtterance));
-                        this.varProducto = userUtterance;
                         if (entrada.length > 2) {
                             this.cProducto = new Producto();
                             String[] data = entrada[2].split("--");
@@ -129,7 +121,6 @@ public class Chatbot1 {
                     }
                     if (entrada[1].equals("Ingredientes")) {
                         context.add("Ingredientes", new JsonPrimitive(userUtterance));
-                        this.varIngredientes = userUtterance;
                         if (entrada.length > 2) {
                             this.cIngredientes.clear();
                             String[] data = entrada[2].split(",");
@@ -145,7 +136,6 @@ public class Chatbot1 {
                     }
                     if (entrada[1].equals("Tiendas")) {
                         context.add("Tiendas", new JsonPrimitive(userUtterance));
-                        this.varTiendas = userUtterance;
                         if (entrada.length > 2) {
                             this.cTiendas=new Tiendas();
                             String[] data = entrada[2].split("--");
@@ -258,7 +248,7 @@ public class Chatbot1 {
             JsonArray elements = new JsonArray();
             JsonObject e = null;
             JsonObject obj = null;
-            JsonObject servicio = service.getIngredientes(varProducto);
+            JsonObject servicio = service.getIngredientes(this.cProducto.getTipo());
             JsonArray elementosServicio = (JsonArray) servicio.get("product").getAsJsonArray();
 
             for (int i = 0; i < elementosServicio.size(); i++) {
@@ -287,7 +277,7 @@ public class Chatbot1 {
             JsonArray elements = new JsonArray();
             JsonObject e = null;
             JsonObject obj = null;
-            JsonObject servicio = service.getTiendas(varProducto, varIngredientes);
+            JsonObject servicio = service.getTiendas(this.cProducto.getTipo(), getIngredientes());
             JsonArray elementosServicio = (JsonArray) servicio.get("tienda").getAsJsonArray();
 
             for (int i = 0; i < elementosServicio.size(); i++) {
@@ -318,7 +308,7 @@ public class Chatbot1 {
             OInformeProducto.add("text", new JsonPrimitive("" + "el producto es: " + this.cProducto.getTipo()));
             out.add("InformeProducto", OInformeProducto);
             JsonObject OInformeIngredientes = new JsonObject();
-            OInformeIngredientes.add("text", new JsonPrimitive("" + "ingredientes: " + this.cIngredientes.toString()));
+            OInformeIngredientes.add("text", new JsonPrimitive("" + "ingredientes: " + getIngredientes()));
             out.add("InformeIngredientes", OInformeIngredientes);
             JsonObject OInformeTienda = new JsonObject();
             OInformeTienda.add("text", new JsonPrimitive("" + "Tienda: " + this.cTiendas.getNombre()));
@@ -340,5 +330,13 @@ public class Chatbot1 {
         System.out.println("salida: " + out.toString());
         return out;
 
+    }
+    
+    public String getIngredientes(){
+       String res="";
+        for (int i = 0; i < this.cIngredientes.size(); i++) {
+            res+=","+this.cIngredientes.get(i).getIngredientes();
+        }
+       return res;
     }
 }
