@@ -94,6 +94,7 @@ public class Chatbot2 {
 
             if (userType != null) {
                 String[] entrada = userType.split(":");
+                System.out.println("type "+ entrada[0]);
                 if (entrada[0].trim().equals("requestProducto")) {
                     userAction.add("userIntent", new JsonPrimitive("intentProducto"));
                 } else if (entrada[0].trim().equals("requestIngredientes")) {
