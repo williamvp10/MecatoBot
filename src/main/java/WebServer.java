@@ -36,7 +36,7 @@ public class WebServer {
                 String keyValueSplitter = "=";
                 String[] params = body.split(splitChar);
 
-                String userUtterance = "noneSaid", userType = "noneSaid";
+                String userUtterance = "noneSaid", userId = "noneSaid", userType = "noneSaid", userName = "noneSaid";
 
                 for (int i = 0; i < params.length; i++) {
 
@@ -58,6 +58,22 @@ public class WebServer {
                         }
                         userType = userType.replaceAll("%20", " ");
                         userType = userType.replaceAll("%3A", ":");
+                    } else if (sv[0].equals("userId")) {
+                        if (sv.length > 0) {
+                            userId = sv[1];
+                        } else {
+                            userId = "";
+                        }
+                        userId = userId.replaceAll("%20", " ");
+                        userId = userId.replaceAll("%3A", ":");
+                    } else if (sv[0].equals("userName")) {
+                        if (sv.length > 0) {
+                            userName = sv[1];
+                        } else {
+                            userName = "";
+                        }
+                        userName = userName.replaceAll("%20", " ");
+                        userName = userName.replaceAll("%3A", ":");
                     }
                 }
 
@@ -67,9 +83,11 @@ public class WebServer {
 
                     JsonObject userInput = new JsonObject();
                     userInput.add("userUtterance", new JsonPrimitive(userUtterance));
+                    userInput.add("userId", new JsonPrimitive(userId));
+                    userInput.add("userName", new JsonPrimitive(userName));
                     if (!userType.equals("noneSaid")) {
-                        System.out.println("type:"+userType);
-                         userInput.add("userType", new JsonPrimitive(userType));
+                        System.out.println("type:" + userType);
+                        userInput.add("userType", new JsonPrimitive(userType));
                     }
                     String botResponse = null;
                     try {

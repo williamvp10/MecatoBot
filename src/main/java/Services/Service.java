@@ -13,15 +13,51 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
 
 public class Service {
 
     public Service() {
     }
+    public JsonObject getIntent(String text)
+            throws ClientProtocolException, IOException {
+        String url = "" + "https://nlpmecatobot.herokuapp.com/intent"; //step 2: Create a HTTP client
+        HttpClient httpclient = HttpClientBuilder.create().build();
 
+        //step 3: Create a HTTPPost object and execute the url
+        HttpPost httpPost = new HttpPost(url);
+        JsonObject json2 = new JsonObject();
+        json2.add("text", new JsonPrimitive(text));
+        StringEntity params = new StringEntity(json2.toString());
+        System.out.println("json post:" + json2.toString());
+        httpPost.setEntity(params);
+        httpPost.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+        System.out.println("post:" + httpPost);
+        JsonObject json = null;
+        HttpResponse response = null;
+        try {
+            response = httpclient.execute(httpPost);
+            int statusCode = response.getStatusLine().getStatusCode();
+            System.out.println("status:" + statusCode);
+            if (statusCode == 200) {
+                String response_string = EntityUtils.toString(response.getEntity());
+                json = (new JsonParser()).parse(response_string)
+                        .getAsJsonObject();
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                String prettyJson = gson.toJson(json);
+                System.out.println(prettyJson);
+            }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            System.out.println("error");
+        }
+        return json;
+    }
     public JsonObject getTipos()
             throws ClientProtocolException, IOException {
         String url = "https://servicemecatobot.herokuapp.com/myApp/rest/products";

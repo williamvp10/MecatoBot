@@ -13,7 +13,6 @@ import java.util.ArrayList;
  * @author willi
  */
 public class Pedido {
-
     @SerializedName("id")
     private String usuario;
     @SerializedName("tipo")
@@ -40,6 +39,10 @@ public class Pedido {
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public void addIngredientes(String ingredientes) {
+        this.ingredientes.add(ingredientes);
     }
 
     public void setIngredientes(String ingredientes) {
