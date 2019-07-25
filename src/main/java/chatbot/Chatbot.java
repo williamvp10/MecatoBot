@@ -11,6 +11,8 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonParser;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Chatbot {
 
@@ -33,6 +35,7 @@ public class Chatbot {
             userInput.add("userId", new JsonPrimitive(id));
             userInput.add("userName", new JsonPrimitive(name));
             userInput.add("userUtterance", new JsonPrimitive(userUtterance));
+            System.out.println("input:" + userInput);
             JsonObject botOutput = c.process(userInput);
             String botUtterance = "";
             if (botOutput != null && botOutput.has("botUtterance")) {
@@ -60,7 +63,7 @@ public class Chatbot {
         searchUser(userInput);
         //step2: process user input and identify bot intent
         JsonObject userAction = processUserInput(userInput);
-        
+
         System.out.println("context " + context.toString());
         //step3: structure output
         JsonObject out = getBotOutput();
@@ -136,8 +139,14 @@ public class Chatbot {
         } else if (userUtterance != null) {
             Pedido p = null;
             JsonObject intent = this.service.getIntent(userUtterance);
-            String intent_name = intent.get("intent").getAsJsonObject().get("name").getAsString();
-            JsonArray entities = intent.get("entities").getAsJsonArray();
+            String intent_name = "";
+            JsonArray entities = null;
+            try {
+                intent_name = intent.get("intent").getAsJsonObject().get("name").getAsString();
+                entities = intent.get("entities").getAsJsonArray();
+            } catch (Exception ex) {
+                intent_name = "";
+            }
             Double confidence = Double.parseDouble(intent.get("intent").getAsJsonObject().get("confidence").getAsString());
             if (confidence > 0.5) {
                 switch (intent_name) {
@@ -226,57 +235,197 @@ public class Chatbot {
         JsonObject buttons = new JsonObject();
         String botUtterance = "";
         String type = "";
-        if (botIntent.equals("saludoUsuario")) {
-            botUtterance = "hola en ue te puedo ayudar ";
-            type = "saludar";
-            System.out.println(this.service.getTipos().toString());
-            buttons = this.service.getTipos();
-        } else if (botIntent.equals("menu")) {
-            botUtterance = "selecciona un producto";
-            type = "menu";
-            System.out.println(this.service.getTipos().toString());
-            buttons = this.service.getTipos();
-        } else if (botIntent.equals("agradecimientoUsuario")) {
-            botUtterance = "gracias por usar nuestro servicio, que tengas un buen dia!!";
-            type = "agradecer";
-        } else if (botIntent.equals("requestFinalizarPedido")) {
-            botUtterance = " tu pedido ha sido procesado, estarémos allá en poco tiempo";
-            type = "finalizar";
-        } else if (botIntent.equals("requestTipo")) {
-            botUtterance = " Que deseas en este instante? ";
-            type = "ofrecerTipo";
-            buttons = service.getTipos();
-        } else if (botIntent.equals("requestIngredientes")) {
-            type = "ofrecerIngredientes";
-            String tipo = user.getPedido().getTipo();
-            botUtterance = " Selecciona los ingredientes para tu " + tipo;
-            buttons = service.getIngredientes(tipo);
-        } else if (botIntent.equals("requestTiendas")) {
-            String tipo = user.getPedido().getTipo();
-            ArrayList<String> ing = user.getPedido().getIngredientes();
-            String ingrediente = "";
-            for (int i = 0; i < ing.size(); i++) {
-                if (i != 0) {
-                    ingrediente += ",";
+        String tipo = "";
+        switch (botIntent) {
+            case "saludoUsuario":
+                botUtterance = "hola en que te puedo ayudar ";
+                type = "saludar";
+                out = getbotsaludo();
+                break;
+            case "menu":
+                botUtterance = "selecciona un producto";
+                type = "menu";
+                out = getbotMenu();
+                break;
+            case "agradecimientoUsuario":
+                botUtterance = "gracias por usar nuestro servicio, que tengas un buen dia!!";
+                type = "agradecer";
+                out = getbotAgradecimiento();
+                break;
+            case "requestFinalizarPedido":
+                botUtterance = " tu pedido ha sido procesado, estarémos allá en poco tiempo";
+                type = "finalizar";
+                out = getbotsaludo();
+                break;
+            case "requestTipo":
+                botUtterance = " Que deseas en este instante? ";
+                type = "ofrecerTipo";
+                out = getbotMenu();
+                break;
+            case "requestIngredientes":
+                type = "ofrecerIngredientes";
+                tipo = user.getPedido().getTipo();
+                botUtterance = " Selecciona los ingredientes para tu " + tipo;
+                out = getbotIngredientes(user);
+                break;
+            case "requestTiendas":
+                tipo = user.getPedido().getTipo();
+                ArrayList<String> ing = user.getPedido().getIngredientes();
+                String ingrediente = "";
+                for (int i = 0; i < ing.size(); i++) {
+                    if (i != 0) {
+                        ingrediente += ",";
+                    }
+                    ingrediente += ing.get(i);
                 }
-                ingrediente += ing.get(i);
-            }
-            type = "ofrecerTiendas";
-            botUtterance = " estas son las tiendas que ofrecen " + tipo + " con ingredientes " + ingrediente;
-            buttons = service.getTienda(tipo, ingrediente);
-        } else if (botIntent.equals("requestConfirmar")) {
-            type = "confirmarPedido";
-            botUtterance = " Confirme su pedido ";
-            JsonParser parser = new JsonParser();
-            String infoPedido = new Gson().toJson(user.getPedido());
-            out.add("Pedido", (JsonObject) parser.parse(infoPedido));
+                type = "ofrecerTiendas";
+                botUtterance = " estas son las tiendas que ofrecen " + tipo + " con ingredientes " + ingrediente;
+                out = getbotTiendas(user);
+                break;
+            case "requestConfirmar":
+                type = "confirmarPedido";
+                botUtterance = "Confirme su pedido";
+                JsonParser parser = new JsonParser();
+                String infoPedido = new Gson().toJson(user.getPedido());
+                out.add("Pedido", (JsonObject) parser.parse(infoPedido));
+                break;
+            case "boterror":
+                botUtterance = "gracias por usar nuestro servicio, que tengas un buen dia!!";
+                type = "agradecer";
+                break;
+            default:
+
+                break;
         }
         out.add("botIntent", context.get("botIntent"));
         out.add("botUtterance", new JsonPrimitive(botUtterance));
         out.add("type", new JsonPrimitive(type));
-        out.add("buttons", buttons);
         System.out.println("context: " + context.toString());
         System.out.println("salida: " + out.toString());
+        return out;
+    }
+
+    public JsonObject getbotsaludo() {
+        JsonObject out = new JsonObject();
+        JsonArray buttons = new JsonArray();
+        out.add("buttons", buttons);
+        return out;
+    }
+
+    public JsonObject getbotAgradecimiento() {
+        JsonObject out = new JsonObject();
+        JsonArray buttons = new JsonArray();
+        out.add("buttons", buttons);
+        return out;
+    }
+
+    public JsonObject getbotMenu() {
+        JsonObject out = new JsonObject();
+        JsonArray buttons = new JsonArray();
+        JsonObject b = null;
+        JsonArray b1 = null;
+        JsonArray elements = new JsonArray();
+        JsonObject e = null;
+        JsonObject servicio = null;
+        try {
+            servicio = service.getTipos();
+        } catch (Exception ex) {
+
+        }
+        JsonArray elementosServicio = (JsonArray) servicio.get("product").getAsJsonArray();
+
+        for (int i = 0; i < elementosServicio.size(); i++) {
+            e = new JsonObject();
+            JsonObject obj = elementosServicio.get(i).getAsJsonObject();
+            e.add("titulo", new JsonPrimitive("" + "" + obj.get("tipo").getAsString()));
+            b = new JsonObject();
+            b1 = new JsonArray();
+            b.add("titulo", new JsonPrimitive(obj.get("tipo").getAsString()));
+            b.add("respuesta", new JsonPrimitive("requestIngredientes:Producto:" + obj.get("tipo").getAsString()));
+            b1.add(b);
+            e.add("buttons", b1);
+            elements.add(e);
+        }
+        out.add("elements", elements);
+        out.add("buttons", buttons);
+        return out;
+    }
+
+    public JsonObject getbotIngredientes(Usuario user) {
+        JsonObject out = new JsonObject();
+        JsonArray buttons = new JsonArray();
+        JsonObject b = null;
+        JsonArray b1 = null;
+        JsonArray elements = new JsonArray();
+        JsonObject e = null;
+        JsonObject obj = null;
+        JsonObject servicio = null;
+        try {
+            servicio = service.getIngredientes(user.getPedido().getTipo());
+            System.out.println(servicio);
+            JsonArray elementosServicio = servicio.get("Ingredient").getAsJsonArray();
+            for (int i = 0; i < elementosServicio.size(); i++) {
+                e = new JsonObject();
+                obj = elementosServicio.get(i).getAsJsonObject();
+                e.add("titulo", new JsonPrimitive("" + "" + obj.get("nombre").getAsString()));
+                b = new JsonObject();
+                b1 = new JsonArray();
+                b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
+                b.add("respuesta", new JsonPrimitive("add Ingredientes:" + obj.get("nombre").getAsString()));
+                b1.add(b);
+                e.add("buttons", b1);
+                elements.add(e);
+            }
+        } catch (IOException ex) {
+
+        }
+        b = new JsonObject();
+        b.add("titulo", new JsonPrimitive("enviar"));
+        b.add("respuesta", new JsonPrimitive("requestTiendas:Ingredientes"));
+        buttons.add(b);
+        out.add("elements", elements);
+        out.add("buttons", buttons);
+        return out;
+    }
+
+    public JsonObject getbotTiendas(Usuario user) {
+        JsonObject out = new JsonObject();
+        JsonArray buttons = new JsonArray();
+        JsonObject b = null;
+        JsonArray b1 = null;
+        JsonArray elements = new JsonArray();
+        JsonObject e = null;
+        JsonObject obj = null;
+        ArrayList<String> ing = user.getPedido().getIngredientes();
+        String ingrediente = "";
+        for (int i = 0; i < ing.size(); i++) {
+            if (i != 0) {
+                ingrediente += ",";
+            }
+            ingrediente += ing.get(i);
+        }
+        JsonObject servicio=null;
+        try {
+            servicio = service.getTienda(user.getPedido().getTipo(),ingrediente);
+        } catch (IOException ex) {
+            System.out.println(" error servicio tienda");
+        }
+        JsonArray elementosServicio = (JsonArray) servicio.get("tienda").getAsJsonArray();
+
+        for (int i = 0; i < elementosServicio.size(); i++) {
+            e = new JsonObject();
+            obj = elementosServicio.get(i).getAsJsonObject();
+            e.add("titulo", new JsonPrimitive("" + "" + obj.get("nombre").getAsString()));
+            b = new JsonObject();
+            b1 = new JsonArray();
+            b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
+            b.add("respuesta", new JsonPrimitive("requestResultados:Tiendas:" + obj.get("nombre").getAsString()));
+            b1.add(b);
+            e.add("buttons", b1);
+            elements.add(e);
+        }
+        out.add("elements", elements);
+        out.add("buttons", buttons);
         return out;
     }
 
