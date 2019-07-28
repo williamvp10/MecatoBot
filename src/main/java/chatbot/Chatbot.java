@@ -136,7 +136,7 @@ public class Chatbot {
                     }
                     user.setPedido(p);
                     break;
-                case "confirmar pedido":
+                case "requestResultados":
                     context.add("botIntent", new JsonPrimitive("requestConfirmar"));
                     p = user.getPedido();
                     p.setTienda(type[1]);
