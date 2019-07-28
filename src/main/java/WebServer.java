@@ -36,7 +36,7 @@ public class WebServer {
                 String keyValueSplitter = "=";
                 String[] params = body.split(splitChar);
 
-                String userUtterance = "noneSaid", userId = "noneSaid", userType = "noneSaid", userName = "noneSaid";
+                String userUtterance = "noneSaid", userId = "noneSaid", userType = "noneSaid";
 
                 for (int i = 0; i < params.length; i++) {
 
@@ -66,15 +66,7 @@ public class WebServer {
                         }
                         userId = userId.replaceAll("%20", " ");
                         userId = userId.replaceAll("%3A", ":");
-                    } else if (sv[0].equals("userName")) {
-                        if (sv.length > 0) {
-                            userName = sv[1];
-                        } else {
-                            userName = "";
-                        }
-                        userName = userName.replaceAll("%20", " ");
-                        userName = userName.replaceAll("%3A", ":");
-                    }
+                    } 
                 }
 
                 if (!userUtterance.equals("noneSaid")) {
@@ -84,7 +76,6 @@ public class WebServer {
                     JsonObject userInput = new JsonObject();
                     userInput.add("userUtterance", new JsonPrimitive(userUtterance));
                     userInput.add("userId", new JsonPrimitive(userId));
-                    userInput.add("userName", new JsonPrimitive(userName));
                     if (!userType.equals("noneSaid")) {
                         System.out.println("type:" + userType);
                         userInput.add("userType", new JsonPrimitive(userType));

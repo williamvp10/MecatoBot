@@ -28,13 +28,11 @@ public class Chatbot {
         do {
             System.out.print("User:");
             String id = scanner.nextLine();
-            String name = scanner.nextLine();
             userUtterance = scanner.nextLine();
             String type = scanner.nextLine();
 
             JsonObject userInput = new JsonObject();
             userInput.add("userId", new JsonPrimitive(id));
-            userInput.add("userName", new JsonPrimitive(name));
             userInput.add("userUtterance", new JsonPrimitive(userUtterance));
             userInput.add("userType", new JsonPrimitive(type));
             System.out.println("input:" + userInput);
@@ -80,14 +78,20 @@ public class Chatbot {
             userid = userInput.get("userId").getAsString();
             userid = userid.replaceAll("%2C", ",");
         }
-        if (userInput.has("userName")) {
-            userName = userInput.get("userName").getAsString();;
-        }
-
         if (this.Usuarios.get(userid) != null) {
             System.out.println(this.Usuarios.get(userid).getId());
         } else {
-            this.Usuarios.put(userid, new Usuario(userid, userName));
+            JsonObject infouser = null;
+            try {
+                infouser = service.getUserFB(userid);
+            } catch (IOException ex) {
+                System.out.println("error al buscar usuario ");
+            }
+            if (infouser != null) {
+                System.out.println();
+                userName = infouser.get("first_name").getAsString();
+                this.Usuarios.put(userid, new Usuario(userid, userName));
+            }
         }
         context.add("userId", new JsonPrimitive(userid));
         context.add("userName", new JsonPrimitive(userName));
@@ -119,6 +123,12 @@ public class Chatbot {
             String[] type = userType.split(":");
             Pedido p = null;
             switch (type[0]) {
+                case "addIngredient":
+                    //obtener info ingredientes disponibles
+                    p = user.getPedido();
+                    p.addIngredientes(type[1]);
+                    context.add("botIntent", new JsonPrimitive("addIngredient"));
+                    break;
                 case "requestIngredientes":
                     //obtener info ingredientes disponibles
                     context.add("botIntent", new JsonPrimitive("requestIngredientes"));
@@ -324,8 +334,12 @@ public class Chatbot {
                 break;
             case "boterror":
                 botUtterance = "gracias por usar nuestro servicio, que tengas un buen dia!!";
-                type = "agradecer";
+                type = "error";
                 break;
+            case "addIngredient":
+                botUtterance = "ingrediente agregado";
+                type = "addIngredient";
+                break;    
             default:
 
                 break;

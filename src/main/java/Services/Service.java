@@ -24,6 +24,31 @@ public class Service {
 
     public Service() {
     }
+
+    public JsonObject getUserFB(String id)
+            throws ClientProtocolException, IOException {
+        String token = "EAADiQpmWQRgBAPglvHwxHZCMaXlZBHHjADrALySMQvlwR4wl5MbnhW5ZA3JDaKqOagA6ZC32lZBoDAv0mYO3rwgJtlihDcGAnfmb3xgj5YTen2ZBPA4a3zsSot4TVB7W0xdjnrmh4ZAt4NVvmBoZAzONDTmWNh119KA1f4YQZA18towZDZD";
+        String url = "https://graph.facebook.com/" + id + "?fields=first_name,last_name&access_token=" + token;
+        HttpClient httpclient = HttpClientBuilder.create().build();
+
+        //step 3: Create a HTTPGet object and execute the url
+        HttpGet httpGet = new HttpGet(url);
+        HttpResponse response = httpclient.execute(httpGet);
+
+        //step 4: Process the result
+        JsonObject json = null;
+        int statusCode = response.getStatusLine().getStatusCode();
+        if (statusCode == 200) {
+            String response_string = EntityUtils.toString(response.getEntity());
+            json = (new JsonParser()).parse(response_string)
+                    .getAsJsonObject();
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String prettyJson = gson.toJson(json);
+            System.out.println(prettyJson);
+        }
+        return json;
+    }
+
     public JsonObject getIntent(String text)
             throws ClientProtocolException, IOException {
         String url = "" + "https://nlpmecatobot.herokuapp.com/intent"; //step 2: Create a HTTP client
@@ -58,11 +83,12 @@ public class Service {
         }
         return json;
     }
+
     public JsonObject getTipos()
             throws ClientProtocolException, IOException {
         String url = "https://servicemecatobot.herokuapp.com/myApp/rest/products";
 
-         //step 2: Create a HTTP client
+        //step 2: Create a HTTP client
         HttpClient httpclient = HttpClientBuilder.create().build();
 
         //step 3: Create a HTTPGet object and execute the url
@@ -111,8 +137,8 @@ public class Service {
 
     public JsonObject getTienda(String tipo, String ing)
             throws ClientProtocolException, IOException {
-        System.out.println("tipo prodcto: "+tipo);
-         System.out.println("ing: "+ing);
+        System.out.println("tipo prodcto: " + tipo);
+        System.out.println("ing: " + ing);
         //step 1: Prepare the url
         String url = "https://servicemecatobot.herokuapp.com/myApp/rest/tiendas/" + tipo.trim() + "/" + ing.trim();
 
