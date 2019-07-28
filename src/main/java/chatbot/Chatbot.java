@@ -99,7 +99,7 @@ public class Chatbot {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public JsonObject processUserInput(JsonObject userInput) throws IOException {
-        String userUtterance ="", userType = "";
+        String userUtterance = "", userType = "";
         JsonObject userAction = new JsonObject();
         Usuario user = this.Usuarios.get(this.context.get("userId").getAsString());
         //default case
@@ -114,7 +114,7 @@ public class Chatbot {
             userType = userType.replaceAll("%2C", ",");
         }
 
-        if (userType.length() != 0 ) {
+        if (userType.length() != 0) {
             System.out.println("userType: " + userType);
             String[] type = userType.split(":");
             Pedido p = null;
@@ -124,7 +124,7 @@ public class Chatbot {
                     context.add("botIntent", new JsonPrimitive("requestIngredientes"));
                     p = user.getPedido();
                     p.setTipo(type[1]);
-                   // user.setPedido(p);
+                    // user.setPedido(p);
                     break;
                 case "requestTiendas":
                     //obtener info tiendas disponibles
@@ -151,7 +151,7 @@ public class Chatbot {
                     break;
             }
 
-        } else if (userUtterance.length() != 0 ) {
+        } else if (userUtterance.length() != 0) {
             System.out.println("userUtterance: " + userUtterance);
             Pedido p = null;
             JsonObject intent = this.service.getIntent(userUtterance);
@@ -176,6 +176,17 @@ public class Chatbot {
                         context.add("botIntent", new JsonPrimitive("agradecimientoUsuario"));
                         break;
                     case "confirmar_pedido":
+                        if (p.getTipo().length() != 0 || p.getIngredientes().size() != 0) {
+                            context.add("botIntent", new JsonPrimitive("requestFinalizarPedido"));
+                        } else {
+                            if (p.getTipo().length() != 0) {
+                                context.add("botIntent", new JsonPrimitive("menu"));
+                            } else if (p.getIngredientes().size() == 0) {
+                                context.add("botIntent", new JsonPrimitive("requestIngredientes"));
+                            } else if (p.getIngredientes().size() == 0) {
+                                context.add("botIntent", new JsonPrimitive("requestTiendas"));
+                            }
+                        }
                         context.add("botIntent", new JsonPrimitive("requestFinalizarPedido"));
                         break;
                     case "negar_pedido":
@@ -183,7 +194,7 @@ public class Chatbot {
                         break;
                     case "resumen_pedido":
                         p = user.getPedido();
-                        if (p.getTipo().length() != 0 || p.getTipo().length() != 0) {
+                        if (p.getTipo().length() != 0 || p.getIngredientes().size() != 0) {
                             context.add("botIntent", new JsonPrimitive("requestConfirmar"));
                         } else {
                             context.add("botIntent", new JsonPrimitive("menu"));
@@ -211,7 +222,13 @@ public class Chatbot {
                                     p.setTipo(entity.get("value").getAsString());
                                 }
                             }
-                            context.add("botIntent", new JsonPrimitive("requestTiendas"));
+                            if (p.getTipo().length() == 0) {
+                                context.add("botIntent", new JsonPrimitive("menu"));
+                            } else if (p.getIngredientes().size() == 0) {
+                                context.add("botIntent", new JsonPrimitive("requestIngredientes"));
+                            } else {
+                                context.add("botIntent", new JsonPrimitive("requestTiendas"));
+                            }
                         } else {
                             context.add("botIntent", new JsonPrimitive("menu"));
                         }
