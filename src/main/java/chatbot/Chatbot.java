@@ -261,6 +261,7 @@ public class Chatbot {
         } else {
             context.add("botIntent", new JsonPrimitive("menu"));
         }
+        System.out.println("restipo :"+res);
         return res;
     }
 
@@ -271,6 +272,7 @@ public class Chatbot {
         } else {
             context.add("botIntent", new JsonPrimitive("requestIngredientes"));
         }
+        System.out.println("resingre :"+res);
         return res;
     }
 
@@ -281,6 +283,7 @@ public class Chatbot {
         } else {
             context.add("botIntent", new JsonPrimitive("requestTiendas"));
         }
+        System.out.println("restienda :"+res);
         return res;
     }
 
