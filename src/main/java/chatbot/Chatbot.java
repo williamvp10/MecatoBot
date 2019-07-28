@@ -144,7 +144,7 @@ public class Chatbot {
                 case "confirmandoPedido":
                     context.add("botIntent", new JsonPrimitive("confirmandoPedido"));
                     if (userUtterance.equals("Si")) {
-                        context.add("botIntent", new JsonPrimitive("finalizarPedido"));
+                        context.add("botIntent", new JsonPrimitive("requestFinalizarPedido"));
                     } else {
                         context.add("botIntent", new JsonPrimitive("menu"));
                     }
