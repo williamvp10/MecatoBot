@@ -30,11 +30,13 @@ public class Chatbot {
             String id = scanner.nextLine();
             String name = scanner.nextLine();
             userUtterance = scanner.nextLine();
+            String type = scanner.nextLine();
 
             JsonObject userInput = new JsonObject();
             userInput.add("userId", new JsonPrimitive(id));
             userInput.add("userName", new JsonPrimitive(name));
             userInput.add("userUtterance", new JsonPrimitive(userUtterance));
+            userInput.add("userType", new JsonPrimitive(type));
             System.out.println("input:" + userInput);
             JsonObject botOutput = c.process(userInput);
             String botUtterance = "";
@@ -97,7 +99,7 @@ public class Chatbot {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public JsonObject processUserInput(JsonObject userInput) throws IOException {
-        String userUtterance = null;
+        String userUtterance ="", userType = "";
         JsonObject userAction = new JsonObject();
         Usuario user = this.Usuarios.get(this.context.get("userId").getAsString());
         //default case
@@ -107,14 +109,13 @@ public class Chatbot {
             userUtterance = userInput.get("userUtterance").getAsString();
             userUtterance = userUtterance.replaceAll("%2C", ",");
         }
-        String userType = null;
         if (userInput.has("userType")) {
             userType = userInput.get("userType").getAsString();
             userType = userType.replaceAll("%2C", ",");
         }
-        System.out.println("userUtterance: " + userUtterance);
-        System.out.println("userType: " + userType);
-        if (userType != null) {
+
+        if (userType.length() != 0 ) {
+            System.out.println("userType: " + userType);
             String[] type = userType.split(":");
             Pedido p = null;
             switch (type[0]) {
@@ -132,7 +133,7 @@ public class Chatbot {
                     for (String ing : ingredientes) {
                         p.setIngredientes(ing);
                     }
-
+                    System.out.println(p.getIngredientes().toArray());
                     break;
                 case "confirmar pedido":
                     context.add("botIntent", new JsonPrimitive("requestConfirmar"));
@@ -149,7 +150,8 @@ public class Chatbot {
                     break;
             }
 
-        } else if (userUtterance != null) {
+        } else if (userUtterance.length() != 0 ) {
+            System.out.println("userUtterance: " + userUtterance);
             Pedido p = null;
             JsonObject intent = this.service.getIntent(userUtterance);
             String intent_name = "";
