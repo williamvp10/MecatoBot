@@ -111,7 +111,8 @@ public class Service {
 
     public JsonObject getTienda(String tipo, String ing)
             throws ClientProtocolException, IOException {
-
+        System.out.println("tipo prodcto: "+tipo);
+         System.out.println("ing: "+ing);
         //step 1: Prepare the url
         String url = "https://servicemecatobot.herokuapp.com/myApp/rest/tiendas/" + tipo.trim() + "/" + ing.trim();
 
