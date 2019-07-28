@@ -115,27 +115,40 @@ public class Chatbot {
         System.out.println("userUtterance: " + userUtterance);
 
         if (userType != null) {
-            if (userType.trim().equals("requestIngredientes")) {
-                //obtener info ingredientes disponibles
-                context.add("botIntent", new JsonPrimitive("requestIngredientes"));
-                Pedido p = user.getPedido();
-                p.setTipo(userUtterance);
-            } else if (userType.trim().equals("requestTiendas")) {
-                context.add("botIntent", new JsonPrimitive("requestTiendas"));
-                Pedido p = user.getPedido();
-                p.setIngredientes(userUtterance);
-            } else if (userType.trim().equals("confirmar pedido")) {
-                context.add("botIntent", new JsonPrimitive("requestConfirmar"));
-                Pedido p = user.getPedido();
-                p.setTienda(userUtterance);
-            } else if (userType.trim().equals("confirmandoPedido")) {
-                context.add("botIntent", new JsonPrimitive("confirmandoPedido"));
-                if (userUtterance.equals("Si")) {
-                    context.add("botIntent", new JsonPrimitive("finalizarPedido"));
-                } else {
-                    context.add("botIntent", new JsonPrimitive("menu"));
-                }
+            String[] type = userType.split(":");
+            Pedido p = null;
+            switch (type[0]) {
+                case "requestIngredientes":
+                    //obtener info ingredientes disponibles
+                    context.add("botIntent", new JsonPrimitive("requestIngredientes"));
+                    p = user.getPedido();
+                    p.setTipo(type[1]);
+                    break;
+                case "requestTiendas":
+                     //obtener info tiendas disponibles
+                    context.add("botIntent", new JsonPrimitive("requestTiendas"));
+                    p = user.getPedido();
+                    String[] ingredientes = type[1].split(",");//guardar ingredientes
+                    for (String ing : ingredientes) {
+                        p.setIngredientes(ing);
+                    }
+
+                    break;
+                case "confirmar pedido":
+                    context.add("botIntent", new JsonPrimitive("requestConfirmar"));
+                    p = user.getPedido();
+                    p.setTienda(type[1]);
+                    break;
+                case "confirmandoPedido":
+                    context.add("botIntent", new JsonPrimitive("confirmandoPedido"));
+                    if (userUtterance.equals("Si")) {
+                        context.add("botIntent", new JsonPrimitive("finalizarPedido"));
+                    } else {
+                        context.add("botIntent", new JsonPrimitive("menu"));
+                    }
+                    break;
             }
+
         } else if (userUtterance != null) {
             Pedido p = null;
             JsonObject intent = this.service.getIntent(userUtterance);
@@ -341,7 +354,7 @@ public class Chatbot {
             b = new JsonObject();
             b1 = new JsonArray();
             b.add("titulo", new JsonPrimitive(obj.get("tipo").getAsString()));
-            b.add("respuesta", new JsonPrimitive("requestIngredientes:Producto:" + obj.get("tipo").getAsString()));
+            b.add("respuesta", new JsonPrimitive("requestIngredientes:" + obj.get("tipo").getAsString()));
             b1.add(b);
             e.add("buttons", b1);
             elements.add(e);
@@ -371,7 +384,7 @@ public class Chatbot {
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
-                b.add("respuesta", new JsonPrimitive("add Ingredientes:" + obj.get("nombre").getAsString()));
+                b.add("respuesta", new JsonPrimitive("addIngredientes:" + obj.get("nombre").getAsString()));
                 b1.add(b);
                 e.add("buttons", b1);
                 elements.add(e);
@@ -381,7 +394,7 @@ public class Chatbot {
         }
         b = new JsonObject();
         b.add("titulo", new JsonPrimitive("enviar"));
-        b.add("respuesta", new JsonPrimitive("requestTiendas:Ingredientes"));
+        b.add("respuesta", new JsonPrimitive("requestTiendas"));
         buttons.add(b);
         out.add("elements", elements);
         out.add("buttons", buttons);
@@ -404,9 +417,9 @@ public class Chatbot {
             }
             ingrediente += ing.get(i);
         }
-        JsonObject servicio=null;
+        JsonObject servicio = null;
         try {
-            servicio = service.getTienda(user.getPedido().getTipo(),ingrediente);
+            servicio = service.getTienda(user.getPedido().getTipo(), ingrediente);
         } catch (IOException ex) {
             System.out.println(" error servicio tienda");
         }
@@ -419,7 +432,7 @@ public class Chatbot {
             b = new JsonObject();
             b1 = new JsonArray();
             b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
-            b.add("respuesta", new JsonPrimitive("requestResultados:Tiendas:" + obj.get("nombre").getAsString()));
+            b.add("respuesta", new JsonPrimitive("requestResultados:" + obj.get("nombre").getAsString()));
             b1.add(b);
             e.add("buttons", b1);
             elements.add(e);
