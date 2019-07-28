@@ -124,6 +124,7 @@ public class Chatbot {
                     context.add("botIntent", new JsonPrimitive("requestIngredientes"));
                     p = user.getPedido();
                     p.setTipo(type[1]);
+                   // user.setPedido(p);
                     break;
                 case "requestTiendas":
                     //obtener info tiendas disponibles
@@ -131,9 +132,9 @@ public class Chatbot {
                     p = user.getPedido();
                     String[] ingredientes = type[1].split(",");//guardar ingredientes
                     for (String ing : ingredientes) {
-                        p.setIngredientes(ing);
+                        p.addIngredientes(ing);
                     }
-                    System.out.println(p.getIngredientes().toArray());
+                    user.setPedido(p);
                     break;
                 case "confirmar pedido":
                     context.add("botIntent", new JsonPrimitive("requestConfirmar"));
