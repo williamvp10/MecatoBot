@@ -113,7 +113,7 @@ public class Chatbot {
             userType = userType.replaceAll("%2C", ",");
         }
         System.out.println("userUtterance: " + userUtterance);
-
+        System.out.println("userType: " + userType);
         if (userType != null) {
             String[] type = userType.split(":");
             Pedido p = null;
@@ -125,7 +125,7 @@ public class Chatbot {
                     p.setTipo(type[1]);
                     break;
                 case "requestTiendas":
-                     //obtener info tiendas disponibles
+                    //obtener info tiendas disponibles
                     context.add("botIntent", new JsonPrimitive("requestTiendas"));
                     p = user.getPedido();
                     String[] ingredientes = type[1].split(",");//guardar ingredientes
