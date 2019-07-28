@@ -130,10 +130,11 @@ public class Chatbot {
                     }
                     break;
                 case "requestIngredientes":
+                    p.setTipo(type[1]);
                     if (findPedidoTipo(p)) {
                         //obtener info ingredientes disponibles
                         context.add("botIntent", new JsonPrimitive("requestIngredientes"));
-                        p.setTipo(type[1]);
+
                     }
                     break;
                 case "requestTiendas":
@@ -143,9 +144,9 @@ public class Chatbot {
                     }
                     break;
                 case "requestResultados":
+                    p.setTienda(type[1]);
                     if (findPedidoTipo(p) && findPedidoIngredientes(p) && findPedidoTienda(p)) {
                         context.add("botIntent", new JsonPrimitive("requestConfirmar"));
-                        p.setTienda(type[1]);
                     }
                     break;
                 case "confirmandoPedido":
