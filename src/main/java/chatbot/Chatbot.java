@@ -138,18 +138,18 @@ public class Chatbot {
                     break;
                 case "requestTiendas":
                     //obtener info tiendas disponibles
-                    if (findPedidoIngredientes(p) && findPedidoTipo(p)) {
+                    if (findPedidoTipo(p) && findPedidoIngredientes(p)) {
                         context.add("botIntent", new JsonPrimitive("requestTiendas"));
                     }
                     break;
                 case "requestResultados":
-                    if (findPedidoTienda(p) && findPedidoIngredientes(p) && findPedidoTipo(p)) {
+                    if (findPedidoTipo(p) && findPedidoIngredientes(p) && findPedidoTienda(p)) {
                         context.add("botIntent", new JsonPrimitive("requestConfirmar"));
                         p.setTienda(type[1]);
                     }
                     break;
                 case "confirmandoPedido":
-                    if (findPedidoTienda(p) && findPedidoIngredientes(p) && findPedidoTipo(p)) {
+                    if (findPedidoTipo(p) && findPedidoIngredientes(p) && findPedidoTienda(p)) {
                         context.add("botIntent", new JsonPrimitive("confirmandoPedido"));
                         if (userUtterance.equals("Si")) {
                             context.add("botIntent", new JsonPrimitive("requestFinalizarPedido"));
@@ -184,18 +184,18 @@ public class Chatbot {
                         context.add("botIntent", new JsonPrimitive("agradecimientoUsuario"));
                         break;
                     case "confirmar_pedido":
-                        if (findPedidoTienda(p) && findPedidoIngredientes(p) && findPedidoTipo(p)) {
+                        if (findPedidoTipo(p) && findPedidoIngredientes(p) && findPedidoTienda(p)) {
                             context.add("botIntent", new JsonPrimitive("requestFinalizarPedido"));
                         }
                         break;
                     case "negar_pedido":
-                        if (findPedidoTienda(p) && findPedidoIngredientes(p) && findPedidoTipo(p)) {
+                        if (findPedidoTipo(p) && findPedidoIngredientes(p) && findPedidoTienda(p)) {
                             context.add("botIntent", new JsonPrimitive("negar"));
                         }
                         break;
                     case "resumen_pedido":
                         p = user.getPedido();
-                        if (findPedidoTienda(p) && findPedidoIngredientes(p) && findPedidoTipo(p)) {
+                        if (findPedidoTipo(p) && findPedidoIngredientes(p) && findPedidoTienda(p)) {
                             context.add("botIntent", new JsonPrimitive("requestConfirmar"));
                         }
                         break;
@@ -221,7 +221,7 @@ public class Chatbot {
                                     p.setTipo(entity.get("value").getAsString());
                                 }
                             }
-                            if (findPedidoIngredientes(p) && findPedidoTipo(p)) {
+                            if (findPedidoTipo(p) && findPedidoIngredientes(p)) {
                                 context.add("botIntent", new JsonPrimitive("requestTiendas"));
                             }
                         } else {
@@ -233,7 +233,7 @@ public class Chatbot {
                             p = user.getPedido();
                             p.setTienda(entities.get(0).getAsJsonObject().get("value").getAsString());
                             System.out.println(" seleccionar tienda " + user.getPedido().getTipo());
-                            if (findPedidoIngredientes(p) && findPedidoTipo(p)) {
+                            if (findPedidoTipo(p) && findPedidoIngredientes(p)) {
                                 context.add("botIntent", new JsonPrimitive("requestConfirmar"));
                             }
                         } else {
@@ -261,7 +261,7 @@ public class Chatbot {
         } else {
             context.add("botIntent", new JsonPrimitive("menu"));
         }
-        System.out.println("restipo :"+res);
+        System.out.println("restipo :" + res);
         return res;
     }
 
@@ -272,7 +272,7 @@ public class Chatbot {
         } else {
             context.add("botIntent", new JsonPrimitive("requestIngredientes"));
         }
-        System.out.println("resingre :"+res);
+        System.out.println("resingre :" + res);
         return res;
     }
 
@@ -283,7 +283,7 @@ public class Chatbot {
         } else {
             context.add("botIntent", new JsonPrimitive("requestTiendas"));
         }
-        System.out.println("restienda :"+res);
+        System.out.println("restienda :" + res);
         return res;
     }
 
