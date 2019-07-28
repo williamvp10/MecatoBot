@@ -275,7 +275,7 @@ public class Chatbot {
         String tipo = "";
         switch (botIntent) {
             case "saludoUsuario":
-                botUtterance = "hola en que te puedo ayudar ";
+                botUtterance = "hola "+user.getNombre()+" en que te puedo ayudar ";
                 type = "saludar";
                 out = getbotsaludo();
                 break;
@@ -325,6 +325,7 @@ public class Chatbot {
                 JsonParser parser = new JsonParser();
                 String infoPedido = new Gson().toJson(user.getPedido());
                 out.add("Pedido", (JsonObject) parser.parse(infoPedido));
+                out.add("username", new JsonPrimitive(user.getNombre()));
                 break;
             case "boterror":
                 botUtterance = "gracias por usar nuestro servicio, que tengas un buen dia!!";
