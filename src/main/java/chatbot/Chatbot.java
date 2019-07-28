@@ -117,47 +117,51 @@ public class Chatbot {
             userType = userInput.get("userType").getAsString();
             userType = userType.replaceAll("%2C", ",");
         }
-
+        Pedido p = user.getPedido();
         if (userType.length() != 0) {
             System.out.println("userType: " + userType);
             String[] type = userType.split(":");
-            Pedido p = null;
             switch (type[0]) {
                 case "addIngredient":
                     //obtener info ingredientes disponibles
-                    p = user.getPedido();
-                    p.addIngredientes(type[1]);
-                    context.add("botIntent", new JsonPrimitive("addIngredient"));
+                    if (findPedidoTipo(p)) {
+                        p.addIngredientes(type[1]);
+                        context.add("botIntent", new JsonPrimitive("addIngredient"));
+                    }
                     break;
                 case "requestIngredientes":
-                    //obtener info ingredientes disponibles
-                    context.add("botIntent", new JsonPrimitive("requestIngredientes"));
-                    p = user.getPedido();
-                    p.setTipo(type[1]);
-                    // user.setPedido(p);
+                    if (findPedidoTipo(p)) {
+                        //obtener info ingredientes disponibles
+                        context.add("botIntent", new JsonPrimitive("requestIngredientes"));
+                        p.setTipo(type[1]);
+                    }
                     break;
                 case "requestTiendas":
                     //obtener info tiendas disponibles
-                    context.add("botIntent", new JsonPrimitive("requestTiendas"));
+                    if (findPedidoIngredientes(p) && findPedidoTipo(p)) {
+                        context.add("botIntent", new JsonPrimitive("requestTiendas"));
+                    }
                     break;
                 case "requestResultados":
-                    context.add("botIntent", new JsonPrimitive("requestConfirmar"));
-                    p = user.getPedido();
-                    p.setTienda(type[1]);
+                    if (findPedidoTienda(p) && findPedidoIngredientes(p) && findPedidoTipo(p)) {
+                        context.add("botIntent", new JsonPrimitive("requestConfirmar"));
+                        p.setTienda(type[1]);
+                    }
                     break;
                 case "confirmandoPedido":
-                    context.add("botIntent", new JsonPrimitive("confirmandoPedido"));
-                    if (userUtterance.equals("Si")) {
-                        context.add("botIntent", new JsonPrimitive("requestFinalizarPedido"));
-                    } else {
-                        context.add("botIntent", new JsonPrimitive("menu"));
+                    if (findPedidoTienda(p) && findPedidoIngredientes(p) && findPedidoTipo(p)) {
+                        context.add("botIntent", new JsonPrimitive("confirmandoPedido"));
+                        if (userUtterance.equals("Si")) {
+                            context.add("botIntent", new JsonPrimitive("requestFinalizarPedido"));
+                        } else {
+                            context.add("botIntent", new JsonPrimitive("menu"));
+                        }
                     }
                     break;
             }
 
         } else if (userUtterance.length() != 0) {
             System.out.println("userUtterance: " + userUtterance);
-            Pedido p = null;
             JsonObject intent = this.service.getIntent(userUtterance);
             String intent_name = "";
             JsonArray entities = null;
@@ -180,28 +184,19 @@ public class Chatbot {
                         context.add("botIntent", new JsonPrimitive("agradecimientoUsuario"));
                         break;
                     case "confirmar_pedido":
-                        if (p.getTipo().length() != 0 || p.getIngredientes().size() != 0) {
+                        if (findPedidoTienda(p) && findPedidoIngredientes(p) && findPedidoTipo(p)) {
                             context.add("botIntent", new JsonPrimitive("requestFinalizarPedido"));
-                        } else {
-                            if (p.getTipo().length() != 0) {
-                                context.add("botIntent", new JsonPrimitive("menu"));
-                            } else if (p.getIngredientes().size() == 0) {
-                                context.add("botIntent", new JsonPrimitive("requestIngredientes"));
-                            } else if (p.getIngredientes().size() == 0) {
-                                context.add("botIntent", new JsonPrimitive("requestTiendas"));
-                            }
                         }
-                        context.add("botIntent", new JsonPrimitive("requestFinalizarPedido"));
                         break;
                     case "negar_pedido":
-                        context.add("botIntent", new JsonPrimitive("negar"));
+                        if (findPedidoTienda(p) && findPedidoIngredientes(p) && findPedidoTipo(p)) {
+                            context.add("botIntent", new JsonPrimitive("negar"));
+                        }
                         break;
                     case "resumen_pedido":
                         p = user.getPedido();
-                        if (p.getTipo().length() != 0 || p.getIngredientes().size() != 0) {
+                        if (findPedidoTienda(p) && findPedidoIngredientes(p) && findPedidoTipo(p)) {
                             context.add("botIntent", new JsonPrimitive("requestConfirmar"));
-                        } else {
-                            context.add("botIntent", new JsonPrimitive("menu"));
                         }
                         break;
                     case "producto_intent":
@@ -226,11 +221,7 @@ public class Chatbot {
                                     p.setTipo(entity.get("value").getAsString());
                                 }
                             }
-                            if (p.getTipo().length() == 0) {
-                                context.add("botIntent", new JsonPrimitive("menu"));
-                            } else if (p.getIngredientes().size() == 0) {
-                                context.add("botIntent", new JsonPrimitive("requestIngredientes"));
-                            } else {
+                            if (findPedidoIngredientes(p) && findPedidoTipo(p)) {
                                 context.add("botIntent", new JsonPrimitive("requestTiendas"));
                             }
                         } else {
@@ -242,10 +233,8 @@ public class Chatbot {
                             p = user.getPedido();
                             p.setTienda(entities.get(0).getAsJsonObject().get("value").getAsString());
                             System.out.println(" seleccionar tienda " + user.getPedido().getTipo());
-                            if (p.getTipo().length() != 0 || p.getTipo().length() != 0) {
+                            if (findPedidoIngredientes(p) && findPedidoTipo(p)) {
                                 context.add("botIntent", new JsonPrimitive("requestConfirmar"));
-                            } else {
-                                context.add("botIntent", new JsonPrimitive("menu"));
                             }
                         } else {
                             context.add("botIntent", new JsonPrimitive("menu"));
@@ -265,6 +254,36 @@ public class Chatbot {
         return userAction;
     }
 
+    public boolean findPedidoTipo(Pedido p) {
+        boolean res = false;
+        if (p.getTipo().length() != 0) {
+            res = true;
+        } else {
+            context.add("botIntent", new JsonPrimitive("menu"));
+        }
+        return res;
+    }
+
+    public boolean findPedidoIngredientes(Pedido p) {
+        boolean res = false;
+        if (p.getIngredientes().size() != 0) {
+            res = true;
+        } else {
+            context.add("botIntent", new JsonPrimitive("requestIngredientes"));
+        }
+        return res;
+    }
+
+    public boolean findPedidoTienda(Pedido p) {
+        boolean res = false;
+        if (p.getTienda().length() != 0) {
+            res = true;
+        } else {
+            context.add("botIntent", new JsonPrimitive("requestTiendas"));
+        }
+        return res;
+    }
+
     public JsonObject getBotOutput() throws IOException {
         Usuario user = this.Usuarios.get(this.context.get("userId").getAsString());
         JsonObject out = new JsonObject();
@@ -275,7 +294,7 @@ public class Chatbot {
         String tipo = "";
         switch (botIntent) {
             case "saludoUsuario":
-                botUtterance = "hola "+user.getNombre()+" en que te puedo ayudar ";
+                botUtterance = "hola " + user.getNombre() + " en que te puedo ayudar ";
                 type = "saludar";
                 out = getbotsaludo();
                 break;
@@ -334,7 +353,7 @@ public class Chatbot {
             case "addIngredient":
                 botUtterance = "ingrediente agregado";
                 type = "addIngredient";
-                break;    
+                break;
             default:
 
                 break;
