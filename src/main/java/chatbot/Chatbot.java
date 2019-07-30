@@ -403,6 +403,8 @@ public class Chatbot {
             e = new JsonObject();
             JsonObject obj = elementosServicio.get(i).getAsJsonObject();
             e.add("titulo", new JsonPrimitive("" + "" + obj.get("tipo").getAsString()));
+            e.add("subtitulo", new JsonPrimitive("" + "" + obj.get("tipo").getAsString()));
+            e.add("url", new JsonPrimitive(getImagen(obj.get("tipo").getAsString())));
             b = new JsonObject();
             b1 = new JsonArray();
             b.add("titulo", new JsonPrimitive(obj.get("tipo").getAsString()));
@@ -433,6 +435,8 @@ public class Chatbot {
                 e = new JsonObject();
                 obj = elementosServicio.get(i).getAsJsonObject();
                 e.add("titulo", new JsonPrimitive("" + "" + obj.get("nombre").getAsString()));
+                e.add("subtitulo", new JsonPrimitive("" + "" + obj.get("nombre").getAsString()));
+                e.add("url", new JsonPrimitive(getImagen(obj.get("nombre").getAsString())));
                 b = new JsonObject();
                 b1 = new JsonArray();
                 b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
@@ -481,6 +485,8 @@ public class Chatbot {
             e = new JsonObject();
             obj = elementosServicio.get(i).getAsJsonObject();
             e.add("titulo", new JsonPrimitive("" + "" + obj.get("nombre").getAsString()));
+            e.add("subtitulo", new JsonPrimitive("" + "" + obj.get("nombre").getAsString()));
+            e.add("url", new JsonPrimitive(getImagen(obj.get("nombre").getAsString())));
             b = new JsonObject();
             b1 = new JsonArray();
             b.add("titulo", new JsonPrimitive(obj.get("nombre").getAsString()));
@@ -494,4 +500,78 @@ public class Chatbot {
         return out;
     }
 
+    public String getImagen(String tipo) {
+        String res = "";
+
+        switch (tipo) {
+            case "pizza":
+                res = "";
+                break;
+            case "hamburguesa":
+                res = "";
+                break;
+            case "queso":
+                res = "https://previews.123rf.com/images/peterhermesfurian/peterhermesfurian1611/peterhermesfurian161100063/66300148-rallado-queso-para-pizza-de-mozzarella-en-un-taz%C3%B3n-de-madera-sobre-blanco-cheddar-como-el-queso-italian.jpg";
+                break;
+            case "champiñones":
+                res = "https://www.hogarmania.com/archivos/201202/champinones-668x400x80xX.jpg";
+                break;
+            case "pollo":
+                res = "https://previews.123rf.com/images/duplass/duplass0805/duplass080500061/3054741-bowl-de-pechuga-de-pollo-desmenuzado-en-un-taz%C3%B3n-en-la-cocina-o-restaurante-.jpg";
+                break;
+            case "piña":
+                res = "https://cdn.chapintv.com/files/2018/06/29/rodajas-de-pi%C3%B1a.jpg";
+                break;
+            case "tomates":
+                res = "https://www.webconsultas.com/sites/default/files/styles/encabezado_articulo/public/migrated/tomate.jpg";
+                break;
+            case "oregano":
+                res = "https://img.vixdata.io/pd/webp-large/es/sites/default/files/imj/elgranchef/t/trucos-para-cocinar-con-oregano-1.jpg";
+                break;
+            case "bocadillo":
+                res = "https://upload.wikimedia.org/wikipedia/commons/6/60/Bocadillo.jpg";
+                break;
+            case "carne":
+                res = "https://www.chefzeecooks.com/wp-content/uploads/2018/08/Carne_Asada_web.jpg";
+                break;
+            case "salchichon":
+                res = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGotIyRSsRUpgjpZob2ZgO4zC6Zy7ZPB9CJ4ceewwgWFNX1CuFmg";
+                break;
+            case "cebolla-salsa-especial":
+                res = "https://media-cdn.tripadvisor.com/media/photo-s/11/cc/71/1f/tartin-salsa-especial.jpg";
+                break;
+            case "tocino":
+                res = "https://cdn2.cocinadelirante.com/sites/default/files/styles/gallerie/public/images/2018/10/como-caramelizar-tocino-receta.jpg";
+                break;
+            case "aros-de-cebolla":
+                res = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQa7aCjpDrAtEEEOig9WcqCy3zGFRgRETsKY_jYJvzo8t4DgJse";
+                break;
+            case "salsa-de-la casa":
+                res = "https://f4d5s4a5.stackpathcdn.com/wp-content/uploads/2018/05/The_Best_Restaurant_Style_Salsa_Sweet_Simple_Vegan9-copy.jpg";
+                break;
+            case "lechuga":
+                res = "https://biotrendies.com/wp-content/uploads/2015/07/lechuga-1000x600.jpg";
+                break;
+            case "salsa-de-tomate":
+                res = "https://hogarmania.global.ssl.fastly.net/hogarmania/images/images01/2017/03/30/5c00ff665a2c1100017758a5/1239x697.jpg";
+                break;
+            case "Dominos Pizza":
+                res = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmEyuTGop8eujX5KwCiw2IV6SGZnAkauBArEYCEEAdHjrlD2HbeQ";
+                break;
+            case "Papa johns":
+                res = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0rt1DX1By-siqqhUB9zuJ-EWp9wL4BEtr2a1LWsU1fZe-V5Ah";
+                break;
+            case "Corral":
+                res = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY4Zt2ZhwhEPQXt98GlfRX4fPeUcy1lnjr0IwqgTP4RhMn45hH";
+                break;
+            case "Rodeo":
+                res = "https://www.hamburguesasdelrodeo.com/bundles/app/img/home/logo.png";
+                break;
+            default:
+                res = "https://www.hamburguesasdelrodeo.com/bundles/app/img/home/logo.png";
+                break;
+        }
+
+        return res;
+    }
 }
