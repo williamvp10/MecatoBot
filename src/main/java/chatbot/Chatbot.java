@@ -505,10 +505,13 @@ public class Chatbot {
 
         switch (tipo) {
             case "pizza":
-                res = "";
+                res = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSW0vzWNFZ7XKFDLj3KNU2XH5GmTyXqo34hcofaGXv-2-7pH_17";
                 break;
             case "hamburguesa":
-                res = "";
+                res = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPbiKXDww3egt_sXWXEKFRo8ThQxQ8C1pnZ4KcEx6NJENh_2UM";
+                break;
+            case "jamon":
+                res = "https://www.consumer.es/wp-content/uploads/2019/07/img_jamon-york-bebe-hd.jpg";
                 break;
             case "queso":
                 res = "https://previews.123rf.com/images/peterhermesfurian/peterhermesfurian1611/peterhermesfurian161100063/66300148-rallado-queso-para-pizza-de-mozzarella-en-un-taz%C3%B3n-de-madera-sobre-blanco-cheddar-como-el-queso-italian.jpg";
@@ -568,7 +571,7 @@ public class Chatbot {
                 res = "https://www.hamburguesasdelrodeo.com/bundles/app/img/home/logo.png";
                 break;
             default:
-                res = "https://www.hamburguesasdelrodeo.com/bundles/app/img/home/logo.png";
+                res = "";
                 break;
         }
 
