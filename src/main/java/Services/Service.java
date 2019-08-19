@@ -56,6 +56,7 @@ public class Service {
 
         //step 3: Create a HTTPPost object and execute the url
         HttpPost httpPost = new HttpPost(url);
+        
         JsonObject json2 = new JsonObject();
         json2.add("text", new JsonPrimitive(text));
         StringEntity params = new StringEntity(json2.toString());
@@ -161,6 +162,10 @@ public class Service {
             System.out.println(prettyJson);
         }
         return json;
+    }
+
+    public JsonObject getEstadoActuador() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

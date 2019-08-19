@@ -68,5 +68,11 @@ public class Pedido {
     public String getTienda() {
         return tienda;
     }
+    
+    public void ClearPedido(){
+        this.tipo="";
+        this.tienda="";
+        this.ingredientes.clear();
+    }
 
 }

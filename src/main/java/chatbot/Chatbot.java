@@ -48,7 +48,6 @@ public class Chatbot {
 
     public Chatbot() {
         context = new JsonObject();
-        context.add("currentTask", new JsonPrimitive("none"));
         service = new Service();
     }
 
@@ -62,8 +61,7 @@ public class Chatbot {
         //step1: search user or add
         searchUser(userInput);
         //step2: process user input and identify bot intent
-        JsonObject userAction = processUserInput(userInput);
-
+        processUserInput(userInput);
         System.out.println("context " + context.toString());
         //step3: structure output
         JsonObject out = getBotOutput();
@@ -102,13 +100,10 @@ public class Chatbot {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public JsonObject processUserInput(JsonObject userInput) throws IOException {
+    public void processUserInput(JsonObject userInput) throws IOException {
         String userUtterance = "", userType = "";
-        JsonObject userAction = new JsonObject();
         Usuario user = this.Usuarios.get(this.context.get("userId").getAsString());
         //default case
-        userAction.add("userIntent", new JsonPrimitive(""));
-
         if (userInput.has("userUtterance")) {
             userUtterance = userInput.get("userUtterance").getAsString();
             userUtterance = userUtterance.replaceAll("%2C", ",");
@@ -155,6 +150,7 @@ public class Chatbot {
                         if (userUtterance.equals("Si")) {
                             context.add("botIntent", new JsonPrimitive("requestFinalizarPedido"));
                         } else {
+                            p.ClearPedido();
                             context.add("botIntent", new JsonPrimitive("menu"));
                         }
                     }
@@ -163,7 +159,13 @@ public class Chatbot {
 
         } else if (userUtterance.length() != 0) {
             System.out.println("userUtterance: " + userUtterance);
-            JsonObject intent = this.service.getIntent(userUtterance);
+            JsonObject intent=null;
+            try{
+             intent = this.service.getIntent(userUtterance);
+            }catch(Exception ex){
+              System.out.println("ex--"+ex);
+              intent = this.service.getIntent(userUtterance);
+            }
             String intent_name = "";
             JsonArray entities = null;
             try {
@@ -179,6 +181,7 @@ public class Chatbot {
                         context.add("botIntent", new JsonPrimitive("saludoUsuario"));
                         break;
                     case "menu":
+                        p.ClearPedido();
                         context.add("botIntent", new JsonPrimitive("menu"));
                         break;
                     case "agradecimiento":
@@ -252,7 +255,6 @@ public class Chatbot {
         } else {
             context.add("botIntent", new JsonPrimitive("intentError"));
         }
-        return userAction;
     }
 
     public boolean findPedidoTipo(Pedido p) {
@@ -292,7 +294,6 @@ public class Chatbot {
         Usuario user = this.Usuarios.get(this.context.get("userId").getAsString());
         JsonObject out = new JsonObject();
         String botIntent = context.get("botIntent").getAsString();
-        JsonObject buttons = new JsonObject();
         String botUtterance = "";
         String type = "";
         String tipo = "";
@@ -577,4 +578,5 @@ public class Chatbot {
 
         return res;
     }
+    
 }
