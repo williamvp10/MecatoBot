@@ -159,13 +159,7 @@ public class Chatbot {
 
         } else if (userUtterance.length() != 0) {
             System.out.println("userUtterance: " + userUtterance);
-            JsonObject intent=null;
-            try{
-             intent = this.service.getIntent(userUtterance);
-            }catch(Exception ex){
-              System.out.println("ex--"+ex);
-              intent = this.service.getIntent(userUtterance);
-            }
+            JsonObject intent = this.service.getIntent(userUtterance);
             String intent_name = "";
             JsonArray entities = null;
             try {
@@ -349,6 +343,7 @@ public class Chatbot {
                 JsonParser parser = new JsonParser();
                 String infoPedido = new Gson().toJson(user.getPedido());
                 out.add("Pedido", (JsonObject) parser.parse(infoPedido));
+                out.add("msg", (JsonArray) getimagenes(user.getPedido().getIngredientes()));
                 out.add("username", new JsonPrimitive(user.getNombre()));
                 break;
             case "boterror":
@@ -500,7 +495,15 @@ public class Chatbot {
         out.add("buttons", buttons);
         return out;
     }
-
+    
+    public JsonArray getimagenes(ArrayList<String> ingredientes) {
+        JsonArray out = new JsonArray();
+        for (int i = 0; i < ingredientes.size(); i++) {
+            out.add(new JsonPrimitive(getImagen(ingredientes.get(i))));
+        }
+        return out ;
+    }
+    
     public String getImagen(String tipo) {
         String res = "";
 
